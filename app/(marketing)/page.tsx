@@ -3,12 +3,21 @@ import Image from "next/image";
 import { Loader } from "lucide-react";
 import { ClerkLoading, ClerkLoaded, SignedIn, SignedOut, SignInButton, SignUpButton } from "@clerk/nextjs";
 import Link from "next/link";
+import { auth } from "@clerk/nextjs/server";
+import { getUserProgress } from "@/db/queries";
 
+export default async function Home() {
+  const { userId } = await auth();
+  let userProgress = null;
 
+  if (userId) {
+    try {
+      userProgress = await getUserProgress(userId);
+    } catch (error) {
+      console.error("Error getting user progress:", error);
+    }
+  }
 
-
-
-export default function Home() {
   return (
     <div className="max-w-[998px] mx-auto flex-1 w-full flex flex-col lg:flex-row items-center justify-center p-4 gap-2"> 
       <div className="relative w-[240px] h-[240px] lg:w-[440px] lg:h-[424px] mb-8 lg:mb-0">
@@ -19,22 +28,20 @@ export default function Home() {
           Startul tău financiar începe aici.
         </h1>
        
-        
         <div className="flex flex-col gap-4 items-center gap-y-3 max-w-[330px] w-full">
           <ClerkLoading>
             <Loader className="h-5 w-5 text-muted-foreground animate-spin" />
           </ClerkLoading>
           <ClerkLoaded>
             <SignedOut>
-             
               <div className="flex flex-row gap-4">
-                <SignUpButton mode="modal" aftersigninurl="/learn" aftersignupurl="/learn">
+                <SignUpButton mode="modal" forceRedirectUrl="/courses">
                   <Button size="lg" variant="primary">
                     Începeți acum!
                   </Button>
                 </SignUpButton>
 
-                <SignInButton mode="modal" aftersigninurl="/learn" aftersignupurl="/learn">
+                <SignInButton mode="modal" forceRedirectUrl="/courses">
                   <Button size="lg" variant="outline">
                     Aveți deja un cont
                   </Button>
@@ -42,9 +49,9 @@ export default function Home() {
               </div>
             </SignedOut>
             <SignedIn>
-              <Link href="/learn">
+              <Link href={userProgress && userProgress.activeCourse ? "/learn" : "/courses"}>
                 <Button size="lg" variant="secondary">
-                  Continuă să înveți!
+                  {userProgress && userProgress.activeCourse ? "Continuă să înveți!" : "Alege un curs"}
                 </Button>
               </Link> 
             </SignedIn>
@@ -54,10 +61,3 @@ export default function Home() {
     </div>
   );
 }
-
-
-/*<h2 className="text-xl text-[#010D3E] tracking-tight mt-6 lg:text-3xl font-bold max-w-[480px] text-center">
-          Cu o aplicație care te ajută să înveți, să economisești și să-ți înțelegi banii, fiecare progres devine o reușită.
-          Ține-ți evoluția sub control, păstrează-ți motivația și sărbătorește-ți succesul financiar – pas cu pas.
-        </h2>
-*/
