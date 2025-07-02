@@ -1,5 +1,5 @@
 "use client";
-
+import { toast } from "sonner";
 import { courses, userProgress } from "@/db/schema";
 import { Card } from "./card";
 import { useRouter } from "next/navigation";
@@ -24,6 +24,7 @@ export const List = ({ courses, activeCourseId }: Props) => {
 
     startTransition(() => {
       upsertUserProgress(id)
+      
     });
   };
 

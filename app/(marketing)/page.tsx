@@ -43,7 +43,7 @@ export default async function Home() {
 
                 <SignInButton mode="modal" forceRedirectUrl="/courses">
                   <Button size="lg" variant="outline">
-                    Aveți deja un cont
+                    Aveți deja un cont? Conectați-vă!
                   </Button>
                 </SignInButton>
               </div>

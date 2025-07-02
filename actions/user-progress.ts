@@ -6,6 +6,7 @@ import db from "@/db/drizzle";
 import { userProgress } from "@/db/schema";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { eq } from "drizzle-orm";
 
 export const upsertUserProgress = async (courseId: number) => {
     try {
@@ -26,6 +27,8 @@ export const upsertUserProgress = async (courseId: number) => {
             throw new Error("Cursul nu a fost găsit");
         }
 
+     
+
         // Check existing user progress
         const existingUserProgress = await getUserProgress(userId);
         console.log("Existing user progress:", !!existingUserProgress);
@@ -36,7 +39,7 @@ export const upsertUserProgress = async (courseId: number) => {
                 activeCourseId: courseId,
                 userName: user.firstName || "User",
                 userImageSrc: user.imageUrl || "/logosaas.png"
-            }).where(userProgress.userId.eq(userId));
+            }).where(eq(userProgress.userId, userId));
         } else {
             console.log("Creating new user progress");
             await db.insert(userProgress).values({
