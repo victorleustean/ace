@@ -49,9 +49,9 @@ const main = async () => {
                 id: 1,
                 courseId: 1,
                 title: "Unitatea 1",
+                description: "Învață noțiunile fundamentale despre bani, bănci şi economie",
                 imageSrc: "/unitate1.jpg",
                 order: 1,
-                description: "Învață noțiunile fundamentale despre bani, bănci şi economie"
             }
         ]);
         
@@ -65,7 +65,7 @@ const main = async () => {
             },
         ]);
 
-        // Insert challenges (required for challengeOptions to reference challengeId: 1)
+        // Insert challenges
         await db.insert(schema.challenges).values([
             {
                 id: 1,

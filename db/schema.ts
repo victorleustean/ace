@@ -1,3 +1,4 @@
+
 import { boolean, pgTable, serial, text, integer, pgEnum } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
 
@@ -17,6 +18,7 @@ export const coursesRelations = relations(courses, ({ many }) => ({
 export const units = pgTable("units", {
   id: serial("id").primaryKey(),
   title: text("title").notNull(),
+  description: text("description"), // Added this field
   imageSrc: text("image_src").notNull(),
   courseId: integer("course_id").references(() => courses.id, { onDelete: "cascade"}).notNull(),
   order: integer("order").notNull(),
@@ -35,6 +37,7 @@ export const lessons = pgTable("lessons", {
   id: serial("id").primaryKey(),
   title: text("title").notNull(),
   unitId: integer("unit_id").references(() => units.id, { onDelete: "cascade" }).notNull(),
+  order: integer("order").notNull(), // Added this field
 });
 
 export const lessonsRelations = relations(lessons, ({ one, many }) => ({
@@ -71,6 +74,8 @@ export const challengeOptions = pgTable("challenge_options", {
   challengeId: integer("challenge_id").references(() => challenges.id, { onDelete: "cascade" }).notNull(),
   text: text("text").notNull(),
   correct: boolean("correct").notNull(),
+  imageSrc: text("image_src"), // Added this field
+  audioSrc: text("audio_src"), // Added this field
 });
 
 export const challengeOptionsRelations = relations(challengeOptions, ({ one }) => ({

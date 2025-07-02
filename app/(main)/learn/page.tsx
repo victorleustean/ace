@@ -5,6 +5,7 @@ import { UserProgress } from "@/components/user-progress";
 import { getUserProgress, getUnits } from "@/db/queries";
 import { redirect } from "next/navigation";
 import { auth } from "@clerk/nextjs/server";
+import { Unit } from "./unit";
 
 const LearnPage = async () => {
   const { userId } = await auth();
@@ -20,7 +21,7 @@ const LearnPage = async () => {
     redirect("/courses");
   }
 
-  const units = await getUnits(userId);
+  const units = await getUnits(userId); // Pass userId here
 
   return (
     <div className="flex flex-row-reverse gap-[48px] px-6">
@@ -38,7 +39,16 @@ const LearnPage = async () => {
           <Header title={userProgress.activeCourse.title} />
           {units.map((unit: any) => (
             <div key={unit.id} className="mb-10">
-              {JSON.stringify(unit)}
+              <h2 className="text-lg font-bold mb-4">{unit.title}</h2>
+              < Unit 
+              id={unit.id}
+              order={unit.order}
+              description={unit.Description}
+              tittle={unit.table}
+              lessons={unit.lessons}
+              activeLesson={undefined}
+              activeLessonPercentage={0}
+              />
             </div>
           ))}
         </FeedWrapper>
@@ -47,4 +57,4 @@ const LearnPage = async () => {
   );
 };
 
-export default LearnPage;//Json return nothing
+export default LearnPage;
