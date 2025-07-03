@@ -2,6 +2,7 @@ import "dotenv/config";
 import { drizzle } from "drizzle-orm/neon-http";
 import { neon } from "@neondatabase/serverless";
 import * as schema from "../db/schema";
+import Image from "next/image";
 
 const sql = neon(process.env.DATABASE_URL!);
 const db = drizzle(sql, { schema });
@@ -24,22 +25,22 @@ const main = async () => {
             {
                 id: 1,
                 title: "Educație financiară", 
-                imageSrc: "/educatie_financiara.jpg",
+                imageSrc: "/financial-literacy.png",
             },
             {
                 id: 2,
                 title: "Educație antreprenorială",
-                imageSrc: "/educatieantreprenoriala1.jpg",
+                imageSrc: "/cooperation.png",
             },
             {
                 id: 3,
-                title: "Economie pentru admiterea la facultățile de drept", 
-                imageSrc: "/economie_drept.jpg",
+                title: "Economie pentru drept", 
+                imageSrc: "/trade.png",
             },
             {
                 id: 4,
-                title: "Economie pentru examenul național de bacalaureat", 
-                imageSrc: "/economie_bac.jpg",
+                title: "Economie pentru Bac", 
+                imageSrc: "/economic.png",
             },
         ]);
 

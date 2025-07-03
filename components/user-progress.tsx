@@ -4,7 +4,7 @@ import Image from "next/image";
 import { InfinityIcon } from "lucide-react";
 
 type Props = {
-  activeCourse: { imageSrc: string; title: string }; // TODO: Replace with DB types
+  activeCourse: { imageSrc: string; title: string };
   hearts: number;
   points: number;
   hasActiveSubscription: boolean;
@@ -21,7 +21,7 @@ export const UserProgress = ({
       <Link href="/courses">
         <Button variant="ghost">
           <Image
-            src={activeCourse.imageSrc}
+            src={activeCourse.imageSrc.trim()}
             alt={activeCourse.title}
             className="rounded-md border"
             width={32}
@@ -44,10 +44,3 @@ export const UserProgress = ({
     </div>
   );
 };
-
-
-
-
-
-
-
