@@ -39,15 +39,14 @@ const LearnPage = async () => {
           <Header title={userProgress.activeCourse.title} />
           {units.map((unit: any) => (
             <div key={unit.id} className="mb-10">
-              <h2 className="text-lg font-bold mb-4">{unit.title}</h2>
-              < Unit 
-              id={unit.id}
-              order={unit.order}
-              description={unit.Description}
-              tittle={unit.table}
-              lessons={unit.lessons}
-              activeLesson={undefined}
-              activeLessonPercentage={0}
+              <Unit 
+                id={unit.id}
+                order={unit.order}
+                description={unit.description}
+                title={unit.title}
+                lessons={unit.lessons}
+                activeLesson={undefined}
+                activeLessonPercentage={0}
               />
             </div>
           ))}

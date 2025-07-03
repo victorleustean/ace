@@ -63,6 +63,30 @@ const main = async () => {
                 order: 1,
                 title: "Banii"
             },
+            {
+                id: 2,
+                unitId: 1,
+                order: 2,
+                title: "Banca"
+            },
+            {
+                id: 3,
+                unitId: 1,
+                order: 3,
+                title: "Banca"
+            },
+            {
+                id: 4,
+                unitId: 1,
+                order: 4,
+                title: "Banca"
+            },
+            {
+                id: 5,
+                unitId: 1,
+                order: 5,
+                title: "Banca"
+            },
         ]);
 
         // Insert challenges
