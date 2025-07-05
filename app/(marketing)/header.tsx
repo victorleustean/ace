@@ -8,8 +8,8 @@ export const Header = () => {
     <header className="h-20 w-full border-b-2 border-slate-200 px-4">
       <div className="lg:max-w-screen-lg mx-auto flex items-center justify-between h-full">
         <div className="pt-8 pl-4 pb-7 flex items-center gap-x-3">
-          <Image src="/spadeslogo1.jpg" height={40} width={40} alt="Mascot" />
-          <h1 className="text-2xl font-extrabold text-black-600 tracking-wide">Spades</h1>
+          <Image src="/alpha.png" height={40} width={40} alt="Mascot" />
+          <h1 className="text-2xl font-extrabold text-grey-600 tracking-wide">FinHub</h1>
         </div>
         <div className="flex items-center gap-x-4">
           <ClerkLoading>

@@ -2,10 +2,11 @@ import { StickyWrapper } from "@/components/sticky-wrapper";
 import { FeedWrapper } from "@/components/feed-wrapper";
 import { Header } from "./header";
 import { UserProgress } from "@/components/user-progress";
-import { getUserProgress, getUnits } from "@/db/queries";
+import { getUserProgress, getLessonPercentage, getUnits, getCourseProgress } from "@/db/queries";
 import { redirect } from "next/navigation";
 import { auth } from "@clerk/nextjs/server";
 import { Unit } from "./unit";
+import { lessons, units as unitsSchema } from "@/db/schema"
 
 const LearnPage = async () => {
   const { userId } = await auth();
@@ -21,7 +22,13 @@ const LearnPage = async () => {
     redirect("/courses");
   }
 
-  const units = await getUnits(userId); // Pass userId here
+  const courseProgress = await getCourseProgress();
+  if (!courseProgress) {
+    redirect("/courses");
+  }
+
+  const lessonPercentage = await getLessonPercentage(userId);
+  const units = await getUnits(userId);
 
   return (
     <div className="flex flex-row-reverse gap-[48px] px-6">
@@ -45,8 +52,10 @@ const LearnPage = async () => {
                 description={unit.description}
                 title={unit.title}
                 lessons={unit.lessons}
-                activeLesson={undefined}
-                activeLessonPercentage={0}
+                activeLesson={courseProgress.activeLesson as typeof lessons.$inferSelect & {
+                  unit: typeof unitsSchema.$inferSelect;
+                } | undefined}
+                activeLessonPercentage={lessonPercentage}
               />
             </div>
           ))}
