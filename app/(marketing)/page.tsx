@@ -1,4 +1,60 @@
-import { Button } from "@/components/ui/button";
+import { Hero } from "./hero"
+import { getUserProgress } from "@/db/queries";
+import { auth } from "@clerk/nextjs/server";
+import { LogoTicker } from "./logo-ticker";
+import { ProductShowcase } from "./product-showcase"
+import { Pricing } from "./pricing"
+import { CallToAction } from "./call-to-action"
+export default async function Home() {
+  const { userId } = await auth();
+  let userProgress = null;
+
+  if (userId) {
+    try {
+      userProgress = await getUserProgress(userId);
+    } catch (error) {
+      console.error("Error getting user progress:", error);
+    }
+  }
+
+  return (
+    <>
+      <Hero />
+      <LogoTicker />
+      <ProductShowcase />
+      <Pricing /> 
+      <CallToAction />
+    </>
+  );
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { Loader } from "lucide-react";
 import { ClerkLoading, ClerkLoaded, SignedIn, SignedOut, SignInButton, SignUpButton } from "@clerk/nextjs";
@@ -60,4 +116,4 @@ export default async function Home() {
       </div>
     </div>
   );
-}
+} */
