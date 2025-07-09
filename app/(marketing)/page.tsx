@@ -5,6 +5,8 @@ import { LogoTicker } from "./logo-ticker";
 import { ProductShowcase } from "./product-showcase"
 import { Pricing } from "./pricing"
 import { CallToAction } from "./call-to-action"
+import { FeaturesCardSection } from "./featurescard";
+import { Testimonials } from "./testimonials"
 export default async function Home() {
   const { userId } = await auth();
   let userProgress = null;
@@ -20,7 +22,9 @@ export default async function Home() {
   return (
     <>
       <Hero />
-      <LogoTicker />
+      <FeaturesCardSection />
+      
+      <Testimonials />
       <ProductShowcase />
       <Pricing /> 
       <CallToAction />

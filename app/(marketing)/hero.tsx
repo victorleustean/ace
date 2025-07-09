@@ -1,13 +1,27 @@
+"use client"
+
 import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
-import cogImage from "@/public/ChatGPT Image 14 iun. 2025, 15_24_19.png"; 
+import { ArrowRight, Loader } from "lucide-react"; // Added Loader import
+import cogImage from "@/public/ChatGPT Image 14 iun. 2025, 15_24_19.png";
 import Image from "next/image";
 import cylinderImage from "@/public/cylinder.png";
 import noodleImage from "@/public/noodle.png";
+import { motion } from "framer-motion";
+import { useScroll, useTransform, useMotionValueEvent } from "framer-motion";
+import { useRef } from "react";
+import { ClerkLoaded, ClerkLoading, SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 
 export function Hero() {
+  const heroRef = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: heroRef,
+    offset: ["start end", "end start"],
+  })
+  const translateY = useTransform(scrollYProgress, [0, 1], [150, -150])
+
+  
   return (
-    <section className="pt-8 pb-20 md:pt-5 md:pb-10 bg-[radial-gradient(ellipse_at_bottom_left,#183EC2,#EAEEFE_100%)] overflow-x-clip">
+    <section ref={heroRef} className="pt-0 pb-20 md:pb-10 bg-[radial-gradient(ellipse_at_bottom_left,#183EC2,#EAEEFE_100%)] overflow-x-clip">
       <div className="container">
         <div className="md:flex items-center">
           <div className="md:w-[478px] xl:w-[600px] px-4 md:px-0 md:ml-8 xl:ml-16">
@@ -21,43 +35,79 @@ export function Hero() {
               Cu o aplicație care te ajută să înveți, să economisești și să-ți înțelegi banii, fiecare progres devine o reușită.
               Ține-ți evoluția sub control, păstrează-ți motivația și sărbătorește-ți succesul financiar – pas cu pas
             </p>
+            
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-1 items-center mt-[30px]">
-                <Button 
-                   variant="default" 
-                   className="w-full sm:w-auto bg-black text-white hover:bg-gray-800 "
-                   size="lg">
-                  Încearcă FinHub gratuit!
-                </Button>
-                <Button 
-                   variant="default" 
-                   className="w-full sm:w-auto bg-white text-black hover:bg-gray-100"
-                    size="lg">
-                    Încearcă FinHub gratuit!
-                </Button>
+              <ClerkLoading>
+                <Loader className="h-5 w-5 text-white animate-spin" />
+              </ClerkLoading>
+              
+              <ClerkLoaded>
+                <SignedIn>
+                  <Button
+                      variant="default"
+                      className="w-full sm:w-auto bg-black text-white hover:bg-gray-800"
+                      size="lg"
+                      onClick={() => window.location.href = "./courses"}>
+                    Continuă să înveți
+                  </Button>
+                </SignedIn>
+                <SignedOut>
+                  <SignInButton mode="modal" afterSignInUrl="/learn" afterSignUpUrl="/learn">
+                    <Button
+                        variant="default"
+                        className="w-full sm:w-auto bg-black text-white hover:bg-gray-800"
+                        size="lg">
+                      Încearcă FinHub gratuit!
+                    </Button>
+                  </SignInButton>
+                  <Button
+                      variant="default"
+                      className="w-full sm:w-auto bg-white text-black hover:bg-gray-100"
+                      size="lg">
+                      Află mai multe
+                  </Button>
+                </SignedOut>
+              </ClerkLoaded>
             </div>
           </div>
-          
+                   
           <div className="mt-20 md:mt-0 md:h-[648px] xl:h-[780px] md:flex-1 relative">
-            <Image 
-              src={cogImage} 
-              alt="cogImage" 
-              width={400} 
-              height={400} 
-              className="md:absolute md:h-full md:w-auto md:max-w-none md:-left-6 lg:left-0 xl:left-8 xl:scale-110"
+            <motion.img
+               src={cogImage.src}
+               alt="cogImage"
+               width={400}
+               height={400}
+               className="md:absolute md:h-full md:w-auto md:max-w-none md:-left-6 lg:left-0 xl:left-8 xl:scale-110"
+               animate={{
+                translateY: [-30, 30],
+               }}
+               transition={{
+                repeat: Infinity,
+                repeatType: "mirror",
+                duration: 3,
+                ease: 'easeInOut',
+               }}
             />
-            <Image 
-              src={cylinderImage} 
-              width={220} 
-              height={220} 
-              alt="Cylinder Image" 
-              className="hidden md:block -top-8 -left-32 md:absolute xl:-left-24 xl:-top-12 xl:scale-110" 
-            />
-            <Image 
-              src={noodleImage} 
-              width={220} 
-              className="hidden lg:block absolute top-[524px] left-[448px] rotate-[30deg] xl:top-[620px] xl:left-[520px] xl:scale-110" 
-              alt="NoodleImage" 
-            />
+            <motion.img
+               src={cylinderImage.src}
+               width={220}
+               height={220}
+               alt="Cylinder Image"
+               className="hidden md:block -top-8 -left-32 md:absolute xl:-left-24 xl:-top-12 xl:scale-110"
+               style={{
+                translateY: translateY,
+               }}
+             />
+            <motion.img
+               src={noodleImage.src}
+               width={220}
+               className="hidden lg:block absolute top-[524px] left-[448px] rotate-[30deg] xl:top-[620px] xl:left-[520px] xl:scale-110"
+               alt="NoodleImage"
+               style={{
+                rotate: 30,
+                translateY: translateY,
+               }}
+             />
           </div>
         </div>
       </div>
