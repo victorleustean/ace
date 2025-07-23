@@ -10,26 +10,26 @@ import { lessons, units as unitsSchema } from "@/db/schema"
 
 const LearnPage = async () => {
   const { userId } = await auth();
-
+  
   if (!userId) {
     console.log("No userId, redirecting to home");
     redirect("/");
   }
-
+  
   const userProgress = await getUserProgress(userId);
   if (!userProgress || !userProgress.activeCourse) {
     console.log("No user progress or active course, redirecting to courses");
     redirect("/courses");
   }
-
+  
   const courseProgress = await getCourseProgress();
   if (!courseProgress) {
     redirect("/courses");
   }
-
+  
   const lessonPercentage = await getLessonPercentage(userId);
   const units = await getUnits(userId);
-
+  
   return (
     <div className="flex flex-row-reverse gap-[48px] px-6">
       <StickyWrapper>
@@ -40,7 +40,7 @@ const LearnPage = async () => {
           hasActiveSubscription={false}
         />
       </StickyWrapper>
-
+      
       <div className="flex-1 flex flex-col">
         <FeedWrapper>
           <Header title={userProgress.activeCourse.title} />

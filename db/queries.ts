@@ -16,7 +16,6 @@ export const getCourseById = cache(async (courseId: number) => {
 });
 
 export const getUnits = cache(async (userId: string) => {
-  // Removed: const { userId } = await auth();
   const currentUserProgress = await getUserProgress(userId);
 
   if (!userId || !currentUserProgress?.activeCourseId) {
@@ -27,6 +26,7 @@ export const getUnits = cache(async (userId: string) => {
     where: eq(units.courseId, currentUserProgress.activeCourseId),
     with: {
       lessons: {
+        orderBy: (lessons, { asc }) => [asc(lessons.order)],
         with: {
           challenges: {
             with: {
@@ -42,14 +42,39 @@ export const getUnits = cache(async (userId: string) => {
 
   const normalizedData = data.map((unit) => {
     const lessonsWithCompletedStatus = unit.lessons.map((lesson) => {
+      // If lesson has no challenges, it's considered incomplete/locked unless it's the first lesson
+      if (lesson.challenges.length === 0) {
+        return { ...lesson, completed: false, hasContent: false };
+      }
+      
       const allCompletedChallenges = lesson.challenges.every((challenge) => {
         return challenge.challengeProgress
           && challenge.challengeProgress.length > 0
           && challenge.challengeProgress.every((progress) => progress.completed);
       });
-      return { ...lesson, completed: allCompletedChallenges };
+      
+      return { ...lesson, completed: allCompletedChallenges, hasContent: true };
     });
-    return { ...unit, lessons: lessonsWithCompletedStatus };
+
+    // Find the first uncompleted lesson to mark as active
+    let activeFound = false;
+    const lessonsWithActiveStatus = lessonsWithCompletedStatus.map((lesson) => {
+      if (!lesson.completed && !activeFound && lesson.hasContent) {
+        activeFound = true;
+        return { ...lesson, isActive: true };
+      }
+      return { ...lesson, isActive: false };
+    });
+
+    // If no lesson with content is found as active, make the first lesson with content active
+    if (!activeFound) {
+      const firstLessonWithContent = lessonsWithActiveStatus.find(lesson => lesson.hasContent);
+      if (firstLessonWithContent) {
+        firstLessonWithContent.isActive = true;
+      }
+    }
+
+    return { ...unit, lessons: lessonsWithActiveStatus };
   });
 
   return normalizedData;
@@ -66,8 +91,6 @@ export const getUserProgress = cache(async (userId?: string) => {
   });
 });
 
-
-
 export const getCourseProgress = cache(async () => {
   const { userId } = await auth();
   const userProgressData = await getUserProgress(userId);
@@ -81,11 +104,13 @@ export const getCourseProgress = cache(async () => {
     where: eq(units.courseId, userProgressData.activeCourseId),
     with: {
       lessons: {
-        unit: true,
-        challenges: {
-          with: {
-            challengeProgress: {
-              where: eq(challengeProgress.userId, userId),
+        orderBy: (lessons, { asc }) => [asc(lessons.order)],
+        with: {
+          challenges: {
+            with: {
+              challengeProgress: {
+                where: eq(challengeProgress.userId, userId),
+              },
             },
           },
         },
@@ -93,23 +118,30 @@ export const getCourseProgress = cache(async () => {
     },
   });
 
- const firstUncompletedLesson = unitsInActiveCourse
-  .flatMap((unit) => unit.lessons)
-  .find((lesson) => {
-    // Fix: check if lesson.challenges exists and is an array
-    if (!lesson.challenges || !Array.isArray(lesson.challenges)) return false;
-    return lesson.challenges.some((challenge) => {
-      return (
-        !challenge.challengeProgress ||
-        challenge.challengeProgress.length === 0 ||
-        challenge.challengeProgress.some((progress) => progress.completed === false)
-      );
+  const firstUncompletedLesson = unitsInActiveCourse
+    .flatMap((unit) => unit.lessons)
+    .find((lesson) => {
+      // Only consider lessons that have challenges (have content)
+      if (!lesson.challenges || !Array.isArray(lesson.challenges) || lesson.challenges.length === 0) {
+        return false;
+      }
+      return lesson.challenges.some((challenge) => {
+        return (
+          !challenge.challengeProgress ||
+          challenge.challengeProgress.length === 0 ||
+          challenge.challengeProgress.some((progress) => progress.completed === false)
+        );
+      });
     });
-  });
+
+  // If no uncompleted lesson found, get the first lesson with content
+  const activeLesson = firstUncompletedLesson || unitsInActiveCourse
+    .flatMap((unit) => unit.lessons)
+    .find((lesson) => lesson.challenges && lesson.challenges.length > 0);
 
   return {
-    activeLesson: firstUncompletedLesson,
-    activeLessonId: firstUncompletedLesson?.id,
+    activeLesson: activeLesson,
+    activeLessonId: activeLesson?.id,
   };
 });
 
@@ -140,6 +172,7 @@ export const getLesson = cache(async (id?: number) => {
       },
     },
   });
+  
   if (!data || !data.challenges) {
     return null;
   }
@@ -152,8 +185,7 @@ export const getLesson = cache(async (id?: number) => {
   return { ...data, challenges: normalizedChallenges }
 });
 
-
-export const getLessonPercentage = cache(async () => {
+export const getLessonPercentage = cache(async (userId?: string) => {
   const courseProgress = await getCourseProgress();
 
   if (!courseProgress?.activeLessonId) {

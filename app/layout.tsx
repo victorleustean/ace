@@ -10,6 +10,7 @@ import {
   UserButton,
 } from '@clerk/nextjs'
 import { Toaster } from "@/components/ui/sonner"
+import { ExitModal } from "@/components/modals/exit-modal";
 
 
 
@@ -36,6 +37,7 @@ export default function RootLayout({
     <html lang="ro">
       <body className={`${font.className} antialiased`}>
         <Toaster />
+        <ExitModal />
         {children}
       </body>
     </html>

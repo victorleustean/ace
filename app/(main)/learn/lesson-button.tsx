@@ -86,7 +86,7 @@ export const LessonButton = ({
                             size="rounded"
                             variant={locked ? "locked" : "secondary"}
                             className={cn(
-                                "h-[70px] w-[70px] border-b-8 active:border-b-2",
+                                "h-[70px] w-[70px] border-b-8 active:border-b-2 rounded-full",
                                 isCompleted && isFirst
                                     ? "bg-gray-500 hover:bg-gray-600 active:bg-gray-700 text-white border-gray-600 hover:border-gray-700 active:border-gray-800"
                                     : "bg-orange-500 hover:bg-orange-600 active:bg-orange-700 text-white border-orange-600 hover:border-orange-700 active:border-orange-800"
@@ -109,7 +109,7 @@ export const LessonButton = ({
                     size="rounded"
                     variant={locked ? "locked" : "secondary"}
                     className={cn(
-                        "h-[70px] w-[70px] border-b-8 active:border-b-2",
+                        "h-[70px] w-[70px] border-b-8 active:border-b-2 rounded-full",
                         isCompleted && isFirst
                             ? "bg-gray-500 hover:bg-gray-600 active:bg-gray-700 text-white border-gray-600 hover:border-gray-700 active:border-gray-800"
                             : locked 
