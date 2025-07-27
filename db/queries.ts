@@ -1,9 +1,8 @@
 import { cache } from "react";
 import db from "./drizzle";
 import { eq } from "drizzle-orm";
-import { userProgress, courses, units, lessons, challenges, challengeProgress, challengeOptions } from "@/db/schema";
+import { userProgress, courses, units, lessons, challenges, challengeProgress, challengeOptions, UserSubscription } from "@/db/schema";
 import { auth } from "@clerk/nextjs/server";
-
 
 export const getCourses = cache(async () => {
   return await db.query.courses.findMany();
@@ -148,41 +147,74 @@ export const getCourseProgress = cache(async () => {
 export const getLesson = cache(async (id?: number) => {
   const { userId } = await auth();
   const courseProgress = await getCourseProgress();
+  
   if (!userId) {
+    console.log("getLesson: No userId");
     return null;
   }
 
   const lessonId = id || courseProgress?.activeLessonId;
 
   if (!lessonId) {
+    console.log("getLesson: No lessonId");
     return null;
   }
 
-  const data = await db.query.lessons.findFirst({
-    where: eq(lessons.id, lessonId),
-    with: { 
-      challenges: {
-        orderBy: (challenges, { asc }) => [asc(challenges.order)],
-        with: {
-          challengeOptions: true,
-          challengeProgress: {
-            where: eq(challengeProgress.userId, userId),
+  console.log("getLesson: Fetching lesson with ID:", lessonId);
+
+  try {
+    const data = await db.query.lessons.findFirst({
+      where: eq(lessons.id, lessonId),
+      with: { 
+        challenges: {
+          orderBy: (challenges, { asc }) => [asc(challenges.order)],
+          with: {
+            challengeOptions: true, // This should fetch the challenge options
+            challengeProgress: {
+              where: eq(challengeProgress.userId, userId),
+            },
           },
         },
       },
-    },
-  });
-  
-  if (!data || !data.challenges) {
+    });
+    
+    if (!data || !data.challenges) {
+      console.log("getLesson: No data or challenges found");
+      return null;
+    }
+
+    console.log("getLesson: Raw data from database:", JSON.stringify(data, null, 2));
+
+    const normalizedChallenges = data.challenges.map((challenge) => {
+      const completed = challenge.challengeProgress && 
+        challenge.challengeProgress.length > 0 && 
+        challenge.challengeProgress.every((progress) => progress.completed);
+
+      console.log(`Challenge ${challenge.id}:`, {
+        id: challenge.id,
+        type: challenge.type,
+        question: challenge.question,
+        challengeOptions: challenge.challengeOptions,
+        optionsCount: challenge.challengeOptions?.length || 0,
+        completed
+      });
+
+      // Map challengeOptions to challengesOptions for compatibility with Quiz component
+      return { 
+        ...challenge, 
+        completed,
+        challengesOptions: challenge.challengeOptions || [] // Ensure it's always an array
+      };
+    });
+    
+    console.log("getLesson: Normalized challenges:", JSON.stringify(normalizedChallenges, null, 2));
+    
+    return { ...data, challenges: normalizedChallenges };
+    
+  } catch (error) {
+    console.error("getLesson: Database error:", error);
     return null;
   }
-
-  const normalizedChallenges = data.challenges.map((challenge) => {
-    const completed = challenge.challengeProgress && challenge.challengeProgress.length > 0 && challenge.challengeProgress.every((progress) => progress.completed)
-
-    return { ...challenge, completed };
-  })
-  return { ...data, challenges: normalizedChallenges }
 });
 
 export const getLessonPercentage = cache(async (userId?: string) => {
@@ -205,4 +237,27 @@ export const getLessonPercentage = cache(async (userId?: string) => {
   );
   
   return percentage;
+});
+
+const DAY_IN_MS = 86_400_000;
+export const getUserSubscription = cache(async () => {
+  const { userId } = await auth();
+  
+  if (!userId) return null;
+
+  const data = await db.query.UserSubscription.findFirst({
+    where: eq(UserSubscription.userId, userId),
+
+  });
+
+  if (!data) return null;
+
+  const isActive = 
+  data.stripePriceId &&
+  data.stripeCurrentPeriodEnd.getTime()! + DAY_IN_MS > Date.now();
+
+  return {
+    ...data,
+    isActive: !!isActive,
+  };
 });

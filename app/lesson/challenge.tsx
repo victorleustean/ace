@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils";
 import { Card } from "./card";
 
 type Props = {
-    options?: typeof challengeOptions.$inferSelect[]; // allow undefined, default to []
+    options?: typeof challengeOptions.$inferSelect[];
     onSelect: (id: number) => void;
     status: "correct" | "wrong" | "none";
     selectedOption?: number;

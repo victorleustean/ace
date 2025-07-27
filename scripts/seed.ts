@@ -2,8 +2,6 @@ import "dotenv/config";
 import { drizzle } from "drizzle-orm/neon-http";
 import { neon } from "@neondatabase/serverless";
 import * as schema from "../db/schema";
-import Image from "next/image";
-import { truncateSync } from "node:fs";
 
 const sql = neon(process.env.DATABASE_URL!);
 const db = drizzle(sql, { schema });
@@ -75,19 +73,19 @@ const main = async () => {
                 id: 3,
                 unitId: 1,
                 order: 3,
-                title: "Banca"
+                title: "Investiții"
             },
             {
                 id: 4,
                 unitId: 1,
                 order: 4,
-                title: "Banca"
+                title: "Economii"
             },
             {
                 id: 5,
                 unitId: 1,
                 order: 5,
-                title: "Banca"
+                title: "Bugete"
             },
         ]);
 
@@ -97,91 +95,119 @@ const main = async () => {
                 id: 1,
                 lessonId: 1,
                 type: "SELECT",
-                question: ' Which one means "the man"?',
+                question: 'Care dintre acestea reprezintă banii fizici?',
                 order: 1,
             },
             {
                 id: 2,
                 lessonId: 1,
                 type: "ASSIST",
-                question: '"the man"?',
+                question: 'Selectează forma de plată digitală',
                 order: 2,
             },
             {
                 id: 3,
                 lessonId: 1,
-                type: "ASSIST",
-                question: '"the robot"?',
+                type: "SELECT",
+                question: 'Care este cea mai sigură metodă de păstrare a banilor?',
                 order: 3,
             }
         ]);
 
-        // Insert challenge options
+        // Insert challenge options for challenge 1
         await db.insert(schema.challengeOptions).values([
             {
                 challengeId: 1,
-                imageSrc: "/man.svg",
+                imageSrc: "/money-cash.svg",
                 correct: true,
-                text: "el hombre",
-                audioSrc: "/es_man.mp3",
+                text: "Bani cash",
+                audioSrc: "/audio/cash.mp3",
             },
             {
                 challengeId: 1,
-                imageSrc: "/woman.svg",
+                imageSrc: "/credit-card.svg",
                 correct: false,
-                text: "la mujer",
-                audioSrc: "/es_woman.mp3",
+                text: "Card de credit",
+                audioSrc: "/audio/card.mp3",
             },
             {
                 challengeId: 1,
-                imageSrc: "/robot.svg",
+                imageSrc: "/digital-wallet.svg",
                 correct: false,
-                text: "el robot",
-                audioSrc: "/es_robot.mp3",
+                text: "Portofel digital",
+                audioSrc: "/audio/digital.mp3",
             },
         ]);
+
+        // Insert challenge options for challenge 2
         await db.insert(schema.challengeOptions).values([
             {
                 challengeId: 2,
+                correct: false,
+                text: "Bani cash",
+                audioSrc: "/audio/cash.mp3",
+            },
+            {
+                challengeId: 2,
                 correct: true,
-                text: "el hombre",
-                audioSrc: "/es_man.mp3",
+                text: "Transfer bancar",
+                audioSrc: "/audio/transfer.mp3",
             },
             {
                 challengeId: 2,
                 correct: false,
-                text: "la mujer",
-                audioSrc: "/es_woman.mp3",
-            },
-            {
-                challengeId: 2,
-                correct: false,
-                text: "el robot",
-                audioSrc: "/es_robot.mp3",
+                text: "Monede",
+                audioSrc: "/audio/coins.mp3",
             },
         ]);
+
+        // Insert challenge options for challenge 3
         await db.insert(schema.challengeOptions).values([
             {
                 challengeId: 3,
-                imageSrc: "/man.svg",
+                imageSrc: "/piggybank.svg",
                 correct: false,
-                text: "el hombre",
-                audioSrc: "/es_man.mp3",
+                text: "Pușculiță",
+                audioSrc: "/audio/piggy.mp3",
             },
             {
                 challengeId: 3,
-                imageSrc: "/woman.svg",
-                correct: false,
-                text: "la mujer",
-                audioSrc: "/es_woman.mp3",
-            },
-            {
-                challengeId: 3,
-                imageSrc: "/robot.svg",
+                imageSrc: "/bank.svg",
                 correct: true,
-                text: "el robot",
-                audioSrc: "/es_robot.mp3",
+                text: "Cont bancar",
+                audioSrc: "/audio/bank.mp3",
             },
+            {
+                challengeId: 3,
+                imageSrc: "/mattress.svg",
+                correct: false,
+                text: "Sub saltea",
+                audioSrc: "/audio/mattress.mp3",
+            },
+        ]);
+
+        await db.insert(schema.challenges).values([
+            {
+                id: 4,
+                lessonId: 2,
+                type: "SELECT",
+                question: 'Care dintre acestea reprezintă banii fizici?',
+                order: 1,
+            },
+            {
+                id: 5,
+                lessonId: 2,
+                type: "ASSIST",
+                question: 'Selectează forma de plată digitală',
+                order: 2,
+            },
+            {
+                id: 6,
+                lessonId: 2,
+                type: "SELECT",
+                question: 'Care este cea mai sigură metodă de păstrare a banilor?',
+                order: 3,
+            }
         ]);
 
         console.log("Seeding finished");

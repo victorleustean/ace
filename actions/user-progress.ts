@@ -8,6 +8,8 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { and, eq } from "drizzle-orm";
 
+const POINTS_TO_REFILL = 10;
+
 export const upsertUserProgress = async (courseId: number) => {
     try {
         const { userId } = await auth();
@@ -26,8 +28,6 @@ export const upsertUserProgress = async (courseId: number) => {
         if (!course) {
             throw new Error("Cursul nu a fost găsit");
         }
-
-     
 
         // Check existing user progress
         const existingUserProgress = await getUserProgress(userId);
@@ -72,7 +72,8 @@ export const ReduceHearts = async (challengeId: number) => {
         throw new Error("Neautorizat");
     }
 
-    const currentUserProgress = await getUserProgress();
+    // Fix: Pass userId to getUserProgress
+    const currentUserProgress = await getUserProgress(userId);
 
     const challenge = await db.query.challenges.findFirst({
         where: eq(challenges.id, challengeId),
@@ -106,6 +107,42 @@ export const ReduceHearts = async (challengeId: number) => {
         hearts: Math.max(currentUserProgress.hearts - 1, 0),
     }).where(eq(userProgress.userId, userId));
 
-    revalidatePath("shop");
+    // Fix: Add missing revalidatePath calls
+    revalidatePath("/learn");
+    revalidatePath("/lesson");
+    revalidatePath("/quests");
+    revalidatePath("/leaderboard");
     
+};
+
+export const refillHearts = async () => {
+  const { userId } = await auth();
+
+  if (!userId) {
+    throw new Error("Unauthorized");
+  }
+
+  const currentUserProgress = await getUserProgress(userId);
+
+  if (!currentUserProgress) {
+    throw new Error("User progress not found");
+  }
+
+  if (currentUserProgress.hearts === 5) {
+    throw new Error("Hearts are already full");
+  }
+
+  if (currentUserProgress.points < POINTS_TO_REFILL) {
+    throw new Error("Not enough points");
+  }
+
+  await db.update(userProgress).set({
+    hearts: 5,
+    points: currentUserProgress.points - POINTS_TO_REFILL,
+  }).where(eq(userProgress.userId, currentUserProgress.userId));
+
+  revalidatePath("/store");
+  revalidatePath("/learn");
+  revalidatePath("/quests");
+  revalidatePath("/leaderboard");
 };
