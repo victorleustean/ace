@@ -247,14 +247,13 @@ export const getUserSubscription = cache(async () => {
 
   const data = await db.query.UserSubscription.findFirst({
     where: eq(UserSubscription.userId, userId),
-
   });
 
   if (!data) return null;
 
   const isActive = 
-  data.stripePriceId &&
-  data.stripeCurrentPeriodEnd.getTime()! + DAY_IN_MS > Date.now();
+    data.stripePriceId &&
+    data.stripeCurrentPeriodEnd?.getTime() + DAY_IN_MS > Date.now();
 
   return {
     ...data,
