@@ -1,5 +1,5 @@
 "use client";
-import { challengeOptions, challenges } from "@/db/schema";
+import { challengeOptions, challenges, UserSubscription } from "@/db/schema";
 import { useState, useEffect, useTransition } from "react"
 import { Header } from "./header"
 import { QuestionBubble } from "./question-bubble"
@@ -14,8 +14,8 @@ import Image from "next/image";
 import { ResultCard } from "./result-card";
 import Confetti from "react-confetti"
 import { useHeartsModal } from "@/store/use-hearts-modal";
-
 import { usePracticeModal } from "@/store/use-practice-modal";
+import { InfinityIcon } from "lucide-react";
 
 type Props = {
     initialPercentage: number; 
@@ -38,9 +38,9 @@ export const Quiz = ({
    const { width, height } = useWindowSize();
 
    const { open: openHeartsModal } = useHeartsModal();
-
-   // FIX: Typo in usePracticeModal
    const { open: openPracticeModal } = usePracticeModal();
+
+   const hasActiveSubscription = !!userSubscription?.isActive;
 
    useMount(() => {
         if ( initialPercentage === 100) {
@@ -50,8 +50,7 @@ export const Quiz = ({
 
    const router = useRouter();
 
-   const [finishAudio, finishState, finishControls] = useAudio({ src: "/finish.mp3", autoPlay: false}) // Changed to false to prevent auto-play on mount
-   
+   const [finishAudio, finishState, finishControls] = useAudio({ src: "/finish.mp3", autoPlay: false})
     const [
         correctAudio,
         _c,
@@ -130,26 +129,31 @@ export const Quiz = ({
             })
         } else {
             startTransition(() => {
-                ReduceHearts(challenge.id)
-                .then((response) => {
-                    if (response?.error === "hearts") {
-                        openHeartsModal();
-                        return;
-                    }
+                // Only reduce hearts if user doesn't have active subscription
+                if (hasActiveSubscription) {
                     incorrectControls.play();
-
                     setStatus("wrong");
+                } else {
+                    ReduceHearts(challenge.id)
+                    .then((response) => {
+                        if (response?.error === "hearts") {
+                            openHeartsModal();
+                            return;
+                        }
+                        incorrectControls.play();
 
-                    if (!response?.error) {
-                        setHearts((prev) => Math.max(prev - 1, 0));
-                    }
-                })
-                .catch(() => toast.error("Ceva nu a mers bine. Te rugăm să încerci din nou."))
+                        setStatus("wrong");
+
+                        if (!response?.error) {
+                            setHearts((prev) => Math.max(prev - 1, 0));
+                        }
+                    })
+                    .catch(() => toast.error("Ceva nu a mers bine. Te rugăm să încerci din nou."))
+                }
             })
         }
     };
 
-    // Add keyboard event listener
     useEffect(() => {
         const handleKeyPress = (event: KeyboardEvent) => {
             if (status !== "none") return;
@@ -157,7 +161,6 @@ export const Quiz = ({
             const key = event.key;
             const keyNumber = parseInt(key);
             
-            // Check if it's a number key and within the range of available options
             if (!isNaN(keyNumber) && keyNumber >= 1 && keyNumber <= options.length) {
                 const optionIndex = keyNumber - 1;
                 const selectedOptionId = options[optionIndex]?.id;
@@ -175,18 +178,15 @@ export const Quiz = ({
         };
     }, [options, status]);
 
-    // Play finish audio when lesson is completed
     useEffect(() => {
         if (!challenge) {
             finishControls.play();
         }
     }, [challenge, finishControls]);
 
-    // Check if we've completed all challenges
     if (!challenge) {
         return (
             <>
-            {/* Render all audio elements */}
             {finishAudio}
             {correctAudio}
             {incorrectAudio}
@@ -215,37 +215,37 @@ export const Quiz = ({
                     Felicitări, ai terminat lecția!</h1>
                     <div className="flex items-center gap-x-4 w-full">
                        <ResultCard 
-                       variant="points"
-                       value={challenges.length * 10}/>
+                         variant="points"
+                         value={challenges.length * 10}
+                       />
                        <ResultCard 
-                       variant="hearts"
-                       value={hearts}/>
+                         variant="hearts"
+                         value={hearts}
+                         hasActiveSubscription={hasActiveSubscription}
+                       />
                     </div>
                 </div>
                 <Footer
-                lessonId={lessontId}
-                status="completed"
-                onCheck={() => router.push("/learn")} />
+                  lessonId={lessontId}
+                  status="completed"
+                  onCheck={() => router.push("/learn")} />
             </>
         );
     }
 
-    
-        
     const title = challenge.type === "ASSIST"
     ? "Alege varianta corectă"
     : challenge.question;
     
     return(
         <>
-        {/* Render all audio elements consistently */}
         {finishAudio}
         {incorrectAudio}
         {correctAudio}
         <Header 
          hearts={hearts}
          percentage={percentage}
-         hasActiveSubscription={!!userSubscription?.isActive}
+         hasActiveSubscription={hasActiveSubscription}
          />
         <div className="flex-1">
             <div className="h-full flex items-center justify-center">
@@ -270,9 +270,9 @@ export const Quiz = ({
             </div>
          </div>
          <Footer 
-         disabled={pending || !selectedOption}
-         status={status}
-         onCheck={onContinue}
+           disabled={pending || !selectedOption}
+           status={status}
+           onCheck={onContinue}
          />
         </>
     )

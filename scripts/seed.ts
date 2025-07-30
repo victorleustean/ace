@@ -18,6 +18,7 @@ const main = async () => {
         await db.delete(schema.units);
         await db.delete(schema.userProgress);
         await db.delete(schema.courses);
+        await db.delete(schema.UserSubscription);
 
         // Insert courses
         await db.insert(schema.courses).values([
@@ -118,21 +119,21 @@ const main = async () => {
         await db.insert(schema.challengeOptions).values([
             {
                 challengeId: 1,
-                imageSrc: "/money-cash.svg",
+                imageSrc: "/money-cash.png",
                 correct: true,
                 text: "Bani cash",
                 audioSrc: "/audio/cash.mp3",
             },
             {
                 challengeId: 1,
-                imageSrc: "/credit-card.svg",
+                imageSrc: "/credit-card.png",
                 correct: false,
                 text: "Card de credit",
                 audioSrc: "/audio/card.mp3",
             },
             {
                 challengeId: 1,
-                imageSrc: "/digital-wallet.svg",
+                imageSrc: "/digital-wallet.png",
                 correct: false,
                 text: "Portofel digital",
                 audioSrc: "/audio/digital.mp3",
@@ -165,21 +166,21 @@ const main = async () => {
         await db.insert(schema.challengeOptions).values([
             {
                 challengeId: 3,
-                imageSrc: "/piggybank.svg",
+                imageSrc: "/piggy-bank.png",
                 correct: false,
                 text: "Pușculiță",
                 audioSrc: "/audio/piggy.mp3",
             },
             {
                 challengeId: 3,
-                imageSrc: "/bank.svg",
+                imageSrc: "/bank-account.png",
                 correct: true,
                 text: "Cont bancar",
                 audioSrc: "/audio/bank.mp3",
             },
             {
                 challengeId: 3,
-                imageSrc: "/mattress.svg",
+                imageSrc: "/bed.png",
                 correct: false,
                 text: "Sub saltea",
                 audioSrc: "/audio/mattress.mp3",

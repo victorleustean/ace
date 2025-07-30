@@ -2,11 +2,13 @@ import { StickyWrapper } from "@/components/sticky-wrapper";
 import { FeedWrapper } from "@/components/feed-wrapper";
 import { Header } from "./header";
 import { UserProgress } from "@/components/user-progress";
-import { getUserProgress, getLessonPercentage, getUnits, getCourseProgress } from "@/db/queries";
+import { getUserProgress, getLessonPercentage, getUnits, getCourseProgress, getUserSubscription } from "@/db/queries";
 import { redirect } from "next/navigation";
 import { auth } from "@clerk/nextjs/server";
 import { Unit } from "./unit";
 import { lessons, units as unitsSchema } from "@/db/schema"
+import { Promo } from "@/components/promo";
+import { Quests } from "@/components/quests";
 
 const LearnPage = async () => {
   const { userId } = await auth();
@@ -29,6 +31,7 @@ const LearnPage = async () => {
   
   const lessonPercentage = await getLessonPercentage(userId);
   const units = await getUnits(userId);
+  const userSubscription = await getUserSubscription();
   
   return (
     <div className="flex flex-row-reverse gap-[48px] px-6">
@@ -37,8 +40,12 @@ const LearnPage = async () => {
           activeCourse={userProgress.activeCourse}
           hearts={userProgress.hearts}
           points={userProgress.points}
-          hasActiveSubscription={false}
+          hasActiveSubscription={!!userSubscription?.isActive}
         />
+        {!(!!userSubscription?.isActive) && (
+        <Promo /> 
+        )}
+        <Quests points={userProgress.points}/>
       </StickyWrapper>
       
       <div className="flex-1 flex flex-col">
