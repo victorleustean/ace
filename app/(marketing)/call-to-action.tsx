@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import starImage from "@/public/star.png";
 import springImage from "@/public/spring.png";
-import Image from "next.image";
+
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react"; // Added missing import
 

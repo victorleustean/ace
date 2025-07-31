@@ -1,23 +1,13 @@
 import { Hero } from "./hero"
-import { getUserProgress } from "@/db/queries";
-import { auth } from "@clerk/nextjs/server";
-import { LogoTicker } from "./logo-ticker";
+
 import { ProductShowcase } from "./product-showcase"
 import { Pricing } from "./pricing"
 import { CallToAction } from "./call-to-action"
 import { FeaturesCardSection } from "./featurescard";
 import { Testimonials } from "./testimonials"
-export default async function Home() {
-  const { userId } = await auth();
-  let userProgress = null;
 
-  if (userId) {
-    try {
-      userProgress = await getUserProgress(userId);
-    } catch (error) {
-      console.error("Error getting user progress:", error);
-    }
-  }
+export default async function Home() {
+
 
   return (
     <>
@@ -31,10 +21,6 @@ export default async function Home() {
     </>
   );
 }
-
-
-
-
 
 
 

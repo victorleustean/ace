@@ -1,21 +1,17 @@
-import { FeedWrapper } from "@/components/feed-wrapper";
 import { StickyWrapper } from "@/components/sticky-wrapper";
 import { UserProgress } from "@/components/user-progress";
-import {  getUserProgress, getUserSubscription } from "@/db/queries";
+import { getTopTenUsers, getUserProgress, getUserSubscription } from "@/db/queries";
 import { auth } from "@clerk/nextjs/server";
 import Image from "next/image";
 import { redirect } from "next/navigation";
-
 import { Sidebar } from "@/components/sidebar";
-import { MobileSidebar } from "@/components/mobile-sidebar";
-import { Progress } from "@/components/ui/progress";
-import { quests } from "@/constants";
+import { MobileHeader } from "@/components/mobile-header";
+import { Separator } from "@/components/ui/separator";
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Promo } from "@/components/promo";
+import { Quests } from "@/components/quests";
 
-
-
-
-const QuestsPage = async () => {
+const LeaderboardPage = async () => {
     const { userId } = await auth();
 
     // If not authenticated, redirect to home
@@ -23,16 +19,14 @@ const QuestsPage = async () => {
         redirect("/");
     }
 
-  
-
     const userProgressData = getUserProgress(userId);
     const userSubscriptionData = getUserSubscription();
+    const topTenUsersData = getTopTenUsers();
 
-
-    const [userProgress, userSubscription, ] = await Promise.all([
+    const [userProgress, userSubscription, topTenUsers] = await Promise.all([
         userProgressData,
         userSubscriptionData,
-      
+        topTenUsersData,
     ]);
 
     if (!userProgress || !userProgress.activeCourse) {
@@ -43,60 +37,68 @@ const QuestsPage = async () => {
     const isPro = !!userSubscription?.isActive;
 
     return (
-        <div className="flex flex-row-reverse gap-[48px] px-6">
-            {!(!!userSubscription?.isActive) && (
-                                <Promo /> 
-                        )}
-            <StickyWrapper>
-                <UserProgress 
-                    activeCourse={userProgress.activeCourse}
-                    hearts={userProgress.hearts}
-                    points={userProgress.points}
-                    hasActiveSubscription={isPro}
-                />
-            </StickyWrapper>
-            <div className="flex-1">
-                <div className="w-full flex flex-col items-center">
-                    <Image
-                        src="/target.png"
-                        alt="Quests"
-                        height={90}
-                        width={90}
+        <>
+            {/* Mobile Header - contains the green bar and hamburger menu */}
+            <MobileHeader />
+            
+            <div className="flex flex-row-reverse gap-[48px] px-6 lg:ml-[256px] pt-[50px] lg:pt-0">
+                {/* Desktop Sidebar - only visible on lg screens */}
+                <div className="hidden lg:block">
+                    <Sidebar />
+                </div>
+                
+                <StickyWrapper>
+                    <UserProgress 
+                        activeCourse={userProgress.activeCourse}
+                        hearts={userProgress.hearts}
+                        points={userProgress.points}
+                        hasActiveSubscription={isPro}
                     />
-                    <h1 className="text-center font-bold text-neutral-800 text-2xl my-6">
-                        Obiectivele mele
-                    </h1>
-                    <p className="text-muted-foreground text-center text-lg mb-6">  
-                      Completează misiuni folosind punctele XP.
-                    </p>
-                    <ul className="w-full">
-                        {quests.map((quest) => {
-                            const progress = (userProgress.points / quest.value) * 100;
-                            return (
-                                <div className="flex items-center w-full p-4 gap-x-4 border-t-2"
-                                key={quest.title}>
-                                    <Image 
-                                    src="/diamond.png"
-                                    alt="Points"
-                                    width={60}
-                                    height={60}/>
-                                    <div className="flex flex-col gap-y-2 w-full">
-                                        <p className="text-neutral-700 text-xl font-bold">
-                                                {quest.title}
-                                        </p>
-                                        <Progress 
-                                        value={progress} className="h-3"/>
-                                    </div>
-                                </div>
-                            )
-                        })}
-
-                    </ul>
+                    {!(!!userSubscription?.isActive) && (
+                        <Promo /> 
+                    )}
+                    <Quests points={userProgress.points}/>
+                </StickyWrapper>
+                
+                <div className="flex-1">
+                    <div className="w-full flex flex-col items-center pt-6">
+                        <Image
+                            src="/gold-medal.png"
+                            alt="Leaderboard"
+                            height={90}
+                            width={90}
+                        />
+                        <h1 className="text-center font-bold text-neutral-800 text-2xl my-6">
+                            Clasament
+                        </h1>
+                        <p className="text-muted-foreground text-center text-lg mb-6">  
+                          Vezi unde te afli în comparație cu ceilalți din comunitate.
+                        </p>
+                        <Separator className="mb-4 h-0.5 rounded-full" />
+                        {topTenUsers.map((userProgress, index) => (
+                            <div 
+                            key={userProgress.userId}
+                            className="flex items-center w-full p-2 px-4 rounded-xl hover:bg-gray-200/50"
+                            >
+                                  <p className="font-bold text-lime-700 mr-4">{index + 1}</p>
+                            <Avatar className="border bg-green-500 h-12 w-12 ml-3 mr-6">
+                                <AvatarImage 
+                                className="object-cover"
+                                src={userProgress.userImageSrc} />
+                            </Avatar>
+                            <p className="font-bold text-neutral-800 flex-1">
+                                {userProgress.userName}
+                            </p>
+                            <p className="text-muted-foreground">
+                                {userProgress.points} XP
+                            </p>
+                            </div>
+                        ))}
+                    </div>
                 </div>
             </div>
-            <MobileSidebar />
-        </div>
+        </>
     );
 };
 
-export default QuestsPage;
+export default LeaderboardPage;

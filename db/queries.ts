@@ -105,7 +105,7 @@ export const getUserProgress = cache(async (userId?: string) => {
 
 export const getCourseProgress = cache(async () => {
   const { userId } = await auth();
-  const userProgressData = await getUserProgress(userId);
+  const userProgressData = await getUserProgress(userId || undefined);
 
   if (!userId || !userProgressData?.activeCourseId) {
     return null;

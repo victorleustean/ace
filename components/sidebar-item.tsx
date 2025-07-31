@@ -23,7 +23,7 @@ const active = pathname === href
 
 return(
 <Button 
-variant={active ? "sidebarOutline" : "sidebar"} 
+variant={active ? "outline" : "ghost"} 
 className="justify-start h-[52px]" 
 asChild
 >

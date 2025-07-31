@@ -1,13 +1,13 @@
 "use client";
-import { challengeOptions, challenges, UserSubscription } from "@/db/schema";
-import { useState, useEffect, useTransition } from "react"
+import { challengeOptions, challenges } from "@/db/schema";
+import { useState, useEffect, useTransition, useCallback, useMemo } from "react"
 import { Header } from "./header"
 import { QuestionBubble } from "./question-bubble"
 import { Challenge } from "./challenge";
 import { Footer } from "./footer";
 import { upsertChallengeProgress } from "@/actions/challenge-progress";
 import { toast } from "sonner"
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { ReduceHearts } from "@/actions/user-progress";
 import { useAudio, useWindowSize, useMount } from "react-use";
 import Image from "next/image";
@@ -15,7 +15,10 @@ import { ResultCard } from "./result-card";
 import Confetti from "react-confetti"
 import { useHeartsModal } from "@/store/use-hearts-modal";
 import { usePracticeModal } from "@/store/use-practice-modal";
-import { InfinityIcon } from "lucide-react";
+
+type UserSubscription = {
+    isActive: boolean;
+} | null | undefined;
 
 type Props = {
     initialPercentage: number; 
@@ -25,7 +28,7 @@ type Props = {
         completed: boolean;
         challengesOptions: typeof challengeOptions.$inferSelect[];
     })[];
-    userSubscription: any;
+    userSubscription: UserSubscription;
 }
 
 export const Quiz = ({ 
@@ -50,15 +53,15 @@ export const Quiz = ({
 
    const router = useRouter();
 
-   const [finishAudio, finishState, finishControls] = useAudio({ src: "/finish.mp3", autoPlay: false})
+   const [finishAudio, , finishControls] = useAudio({ src: "/finish.mp3", autoPlay: false})
     const [
         correctAudio,
-        _c,
+        ,
         correctControls
     ] = useAudio({ src: "/correct.wav"});
     const [
         incorrectAudio,
-        _i,
+        ,
         incorrectControls
     ] = useAudio({ src: "/incorrect.wav"});
     const [pending, startTransition] = useTransition();
@@ -78,16 +81,16 @@ export const Quiz = ({
     const [status, setStatus] = useState< "correct" | "wrong" | "none" >("none");
     
     const challenge = challenges[activeIndex];
-    const options = challenge?.challengesOptions ?? [];
+    const options = useMemo(() => challenge?.challengesOptions ?? [], [challenge]);
 
     const onNext = () => {
         setActiveIndex((current) => current + 1);
     };
     
-    const onSelect = (id: number) => {
+    const onSelect = useCallback((id: number) => {
         if (status !== "none") return;
         setSelectedOption(id);
-    };
+    }, [status]);
 
     const onContinue = () => {
         if (!selectedOption) return; 
@@ -176,7 +179,7 @@ export const Quiz = ({
         return () => {
             window.removeEventListener('keydown', handleKeyPress);
         };
-    }, [options, status]);
+    }, [options, status, onSelect]);
 
     useEffect(() => {
         if (!challenge) {
@@ -221,7 +224,6 @@ export const Quiz = ({
                        <ResultCard 
                          variant="hearts"
                          value={hearts}
-                         hasActiveSubscription={hasActiveSubscription}
                        />
                     </div>
                 </div>

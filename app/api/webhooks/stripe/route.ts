@@ -18,9 +18,10 @@ export async function POST(req: Request) {
             signature,
             process.env.STRIPE_WEBHOOK_SECRET!,
         );
-    } catch(error: any) {
+    } catch(error: unknown) {
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
         console.error('Webhook signature verification failed:', error);
-        return new NextResponse(`Webhook error: ${error.message}`, {
+        return new NextResponse(`Webhook error: ${errorMessage}`, {
             status: 400,
         });
     }
@@ -113,8 +114,8 @@ export async function POST(req: Request) {
             case "invoice.payment_succeeded": {
                 const invoice = event.data.object;
                 
-                // Access subscription property with proper typing
-                const subscriptionId = (invoice as any).subscription;
+                // Access subscription property safely from the raw object
+                const subscriptionId = (invoice as { subscription?: string | Stripe.Subscription }).subscription;
                 
                 console.log('Invoice payment succeeded:', {
                     invoiceId: invoice.id,
@@ -168,9 +169,10 @@ export async function POST(req: Request) {
         }
 
         return new NextResponse('Webhook received', { status: 200 });
-    } catch (error: any) {
+    } catch (error: unknown) {
+        const errorStack = error instanceof Error ? error.stack : 'No stack trace available';
         console.error('Error processing webhook:', error);
-        console.error('Error stack:', error.stack);
+        console.error('Error stack:', errorStack);
         return new NextResponse('Webhook processing failed', { status: 500 });
     }
 }

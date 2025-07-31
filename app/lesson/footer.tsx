@@ -1,5 +1,5 @@
 import { useKey, useMedia } from "react-use";
-import { CheckCircle, CheckCircle2, XCircle } from "lucide-react"
+import {  CheckCircle2, XCircle } from "lucide-react"
 import {cn} from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 
@@ -14,7 +14,7 @@ export const Footer = ({
     onCheck,
     status,
     disabled,
-    lessonId, 
+   
 }: Props) => {
     useKey("Enter", onCheck, {}, [onCheck]);
     const isMobile = useMedia("(max-width: 1024px)");

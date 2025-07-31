@@ -1,15 +1,15 @@
 "use client"
 
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Loader } from "lucide-react"; // Added Loader import
+import { Loader } from "lucide-react"; // Added Loader import
 import cogImage from "@/public/ChatGPT Image 14 iun. 2025, 15_24_19.png";
-import Image from "next/image";
+
 import cylinderImage from "@/public/cylinder.png";
 import noodleImage from "@/public/noodle.png";
 import { motion } from "framer-motion";
-import { useScroll, useTransform, useMotionValueEvent } from "framer-motion";
+import { useScroll, useTransform,  } from "framer-motion";
 import { useRef } from "react";
-import { ClerkLoaded, ClerkLoading, SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
+import { ClerkLoaded, ClerkLoading, SignedIn, SignedOut, SignInButton,  } from "@clerk/nextjs";
 
 export function Hero() {
   const heroRef = useRef(null);
@@ -52,7 +52,7 @@ export function Hero() {
                   </Button>
                 </SignedIn>
                 <SignedOut>
-                  <SignInButton mode="modal" afterSignInUrl="/learn" afterSignUpUrl="/learn">
+                  <SignInButton mode="modal" fallbackRedirectUrl="/learn" forceRedirectUrl="/learn">
                     <Button
                         variant="default"
                         className="w-full sm:w-auto bg-black text-white hover:bg-gray-800"

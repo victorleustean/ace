@@ -18,8 +18,7 @@ type Props = {
 };
 
 export const Unit = ({
-    id,
-    order,
+   
     title,
     description,
     lessons,

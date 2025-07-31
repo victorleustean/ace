@@ -4,9 +4,9 @@ import { auth } from "@clerk/nextjs/server";
 import { Quiz } from "../quiz"
 
 type Props = {
-    params: {
-        lessonId: number;
-    };
+    params: Promise<{
+        lessonId: string;
+    }>;
 };
 
 const LessonIdPage = async ({
@@ -18,7 +18,10 @@ const LessonIdPage = async ({
         redirect("/learn");
     }
     
-    const lessonData = getLesson(params.lessonId);
+    const { lessonId } = await params;
+    const lessonIdNumber = parseInt(lessonId);
+    
+    const lessonData = getLesson(lessonIdNumber);
     const userProgressData = getUserProgress(userId);
     const userSubscriptionData = getUserSubscription();
     

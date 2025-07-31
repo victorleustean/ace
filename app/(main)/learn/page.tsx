@@ -10,6 +10,8 @@ import { lessons, units as unitsSchema } from "@/db/schema"
 import { Promo } from "@/components/promo";
 import { Quests } from "@/components/quests";
 
+
+
 const LearnPage = async () => {
   const { userId } = await auth();
   
@@ -51,12 +53,12 @@ const LearnPage = async () => {
       <div className="flex-1 flex flex-col">
         <FeedWrapper>
           <Header title={userProgress.activeCourse.title} />
-          {units.map((unit: any) => (
+          {units.map((unit) => (
             <div key={unit.id} className="mb-10">
               <Unit 
                 id={unit.id}
                 order={unit.order}
-                description={unit.description}
+                description={unit.description ?? ""}
                 title={unit.title}
                 lessons={unit.lessons}
                 activeLesson={courseProgress.activeLesson as typeof lessons.$inferSelect & {

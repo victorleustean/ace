@@ -51,7 +51,7 @@ export const ExitModal = () => {
                     <Button variant="primary" className="w-full -mt-5" size="lg" onClick={close} >
                         Continuă să înveți
                     </Button>
-                    <Button variant="Danger" className="w-full text-rose-500" size="lg" onClick={() => {
+                    <Button variant="destructive" className="w-full text-rose-500" size="lg" onClick={() => {
                         close();
                         router.push("/learn")
                     }} >

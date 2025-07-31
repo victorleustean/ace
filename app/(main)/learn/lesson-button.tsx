@@ -83,8 +83,7 @@ export const LessonButton = ({
                         }}
                     >
                         <Button
-                            size="rounded"
-                            variant={locked ? "locked" : "secondary"}
+                            variant="secondary"
                             className={cn(
                                 "h-[70px] w-[70px] border-b-8 active:border-b-2 rounded-full",
                                 isCompleted && isFirst
@@ -106,8 +105,7 @@ export const LessonButton = ({
                 </div>
             ) : (
                 <Button
-                    size="rounded"
-                    variant={locked ? "locked" : "secondary"}
+                    variant="secondary"
                     className={cn(
                         "h-[70px] w-[70px] border-b-8 active:border-b-2 rounded-full",
                         isCompleted && isFirst
