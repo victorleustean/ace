@@ -7,11 +7,10 @@ import { getUserSubscription } from "@/db/queries";
 
 export const createStripeUrl = async () => {
     try {
-        // Temporary fix - replace with your actual domain
-        const returnUrl = process.env.NODE_ENV === 'production' 
-            ? "https://yourdomain.com/store" 
-            : "http://localhost:3000/store";
-        console.log("Generated returnUrl:", returnUrl); // Debug the URL
+       const returnUrl = `${process.env.NEXT_PUBLIC_APP_URL}/store`;
+        
+        console.log("Generated returnUrl:", returnUrl);
+        
         const { userId } = await auth();
         const user = await currentUser();
 
@@ -65,6 +64,6 @@ export const createStripeUrl = async () => {
         return { data: stripeSession.url };
     } catch (error) {
         console.error("Stripe URL creation error:", error);
-        throw error; // Re-throw to be caught by the client
+        throw error;
     }
 };

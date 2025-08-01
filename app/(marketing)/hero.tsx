@@ -2,10 +2,10 @@
 
 import { Button } from "@/components/ui/button";
 import { Loader } from "lucide-react"; // Added Loader import
-import cogImage from "@/public/ChatGPT Image 14 iun. 2025, 15_24_19.png";
+import cogImage from "@/public/hero-dollar.webp";
 
-import cylinderImage from "@/public/cylinder.png";
-import noodleImage from "@/public/noodle.png";
+import cylinderImage from "@/public/cylinder.webp";
+import noodleImage from "@/public/noodle.webp";
 import { motion } from "framer-motion";
 import { useScroll, useTransform,  } from "framer-motion";
 import { useRef } from "react";
