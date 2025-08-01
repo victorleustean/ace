@@ -7,7 +7,10 @@ import { getUserSubscription } from "@/db/queries";
 
 export const createStripeUrl = async () => {
     try {
-       const returnUrl = `${process.env.NEXT_PUBLIC_APP_URL}/store`;
+        // FIXED: Use your actual Vercel domain
+        const returnUrl = process.env.NODE_ENV === 'production' 
+            ? "https://finhub-kappa.vercel.app/store" 
+            : "http://localhost:3000/store";
         
         console.log("Generated returnUrl:", returnUrl);
         
