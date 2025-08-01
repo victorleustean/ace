@@ -18,6 +18,7 @@ export const Header = () => {
                 alt="Logo" 
                 width={32} 
                 height={32} 
+                priority
                 className="lg:w-8 lg:h-8 xl:w-10 xl:h-10 2xl:w-12 2xl:h-12" 
               />
             </div>
@@ -37,13 +38,8 @@ export const Header = () => {
           <div className="absolute right-0 top-1/2 -translate-y-1/2 md:right-2.5 z-10">
             <div className="flex gap-4 items-center">
               <ClerkLoading>
-                <div className="relative py-2 px-3 lg:py-3 lg:px-4 xl:py-3 xl:px-5 2xl:py-4 2xl:px-6 rounded-lg font-medium text-sm lg:text-base xl:text-lg 2xl:text-xl bg-gradient-to-b from-black to-[#001E80] shadow-[0px_0px_12px_#001E80]">
-                  <div className="absolute inset-0">
-                    <div className="rounded-lg border border-white/20 absolute inset-0 [mask-image:linear-gradient(to_bottom,white,transparent)]"></div>
-                    <div className="rounded-lg border absolute inset-0 border-white/40 [mask-image:linear-gradient(to_top,white,transparent)]"></div>
-                    <div className="absolute inset-0 shadow-[0_0_10px_rgb(0,30,128,.7)_inset] rounded-lg"></div>
-                  </div>
-                  <Loader className="h-5 w-5 text-white animate-spin" />
+                <div className="h-10 w-24 bg-black/10 animate-pulse rounded-lg flex items-center justify-center">
+                  <Loader className="h-5 w-5 text-black animate-spin" />
                 </div>
               </ClerkLoading>
               

@@ -1,9 +1,6 @@
 "use client"
 
-import productImage from "@/public/product-image.png"
 import Image from "next/image"
-import pyramidImage from "@/public/pyramid.png"
-import tubeImage from "@/public/tube.webp"
 import { motion, useScroll, useTransform } from "framer-motion"
 import { useRef } from "react"
 
@@ -34,9 +31,40 @@ export const ProductShowcase = () => {
                         <p className="text-[22px] xl:text-[26px] leading-[30px] xl:leading-[36px] tracking-tight text-[#010D3E]">FinHub te pregătește pentru viitorul tău financiar și academic – direct de pe orice ecran.</p>
                     </div>
                     <div className="relative flex justify-center w-full">
-                        <Image src={productImage} alt="ProductImage" className="max-w-full h-auto" />
-                        <motion.img src={pyramidImage.src} alt="PyramidImage" className="hidden md:block absolute -right-36 xl:-right-48 -top-32 xl:-top-40 xl:scale-125" height={262} width={262} style={{translateY}} />
-                        <motion.img src={tubeImage.src} alt="TubeImage" height={248} width={248} className="hidden md:block absolute bottom-24 xl:bottom-32 -left-36 xl:-left-48 xl:scale-125" style={{translateY}}/>
+                        <Image 
+                            src="/product-image.png" 
+                            alt="Product Image" 
+                            width={800}
+                            height={600}
+                            loading="lazy"
+                            className="max-w-full h-auto" 
+                        />
+                        <motion.div 
+                            className="hidden md:block absolute -right-36 xl:-right-48 -top-32 xl:-top-40 xl:scale-125" 
+                            style={{translateY}}
+                        >
+                            <Image 
+                                src="/pyramid.png" 
+                                alt="Pyramid Image" 
+                                height={262} 
+                                width={262} 
+                                loading="lazy"
+                                className="w-full h-auto"
+                            />
+                        </motion.div>
+                        <motion.div 
+                            className="hidden md:block absolute bottom-24 xl:bottom-32 -left-36 xl:-left-48 xl:scale-125" 
+                            style={{translateY}}
+                        >
+                            <Image 
+                                src="/tube.webp" 
+                                alt="Tube Image" 
+                                height={248} 
+                                width={248} 
+                                loading="lazy"
+                                className="w-full h-auto"
+                            />
+                        </motion.div>
                     </div>
                 </div>
             </div>

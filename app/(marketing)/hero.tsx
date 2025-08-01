@@ -1,11 +1,9 @@
 "use client"
 
 import { Button } from "@/components/ui/button";
-import { Loader } from "lucide-react"; // Added Loader import
-import cogImage from "@/public/hero-dollar.webp";
+import { Loader } from "lucide-react";
+import Image from "next/image";
 
-import cylinderImage from "@/public/cylinder.webp";
-import noodleImage from "@/public/noodle.webp";
 import { motion } from "framer-motion";
 import { useScroll, useTransform,  } from "framer-motion";
 import { useRef } from "react";
@@ -72,11 +70,7 @@ export function Hero() {
           </div>
                    
           <div className="mt-20 md:mt-0 md:h-[648px] xl:h-[780px] md:flex-1 relative">
-            <motion.img
-               src={cogImage.src}
-               alt="cogImage"
-               width={400}
-               height={400}
+            <motion.div
                className="md:absolute md:h-full md:w-auto md:max-w-none md:-left-6 lg:left-0 xl:left-8 xl:scale-110"
                animate={{
                 translateY: [-30, 30],
@@ -87,27 +81,47 @@ export function Hero() {
                 duration: 3,
                 ease: 'easeInOut',
                }}
-            />
-            <motion.img
-               src={cylinderImage.src}
-               width={220}
-               height={220}
-               alt="Cylinder Image"
+            >
+              <Image
+                src="/hero-dollar.webp"
+                alt="Hero Dollar"
+                width={400}
+                height={400}
+                priority
+                className="w-full h-auto"
+              />
+            </motion.div>
+            <motion.div
                className="hidden md:block -top-8 -left-32 md:absolute xl:-left-24 xl:-top-12 xl:scale-110"
                style={{
                 translateY: translateY,
                }}
-             />
-            <motion.img
-               src={noodleImage.src}
-               width={220}
+             >
+              <Image
+                src="/cylinder.webp"
+                width={220}
+                height={220}
+                alt="Cylinder Image"
+                loading="lazy"
+                className="w-full h-auto"
+              />
+            </motion.div>
+            <motion.div
                className="hidden lg:block absolute top-[524px] left-[448px] rotate-[30deg] xl:top-[620px] xl:left-[520px] xl:scale-110"
-               alt="NoodleImage"
                style={{
                 rotate: 30,
                 translateY: translateY,
                }}
-             />
+             >
+              <Image
+                src="/noodle.webp"
+                width={220}
+                height={220}
+                alt="Noodle Image"
+                loading="lazy"
+                className="w-full h-auto"
+              />
+            </motion.div>
           </div>
         </div>
       </div>
