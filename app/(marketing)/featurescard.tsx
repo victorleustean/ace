@@ -74,7 +74,7 @@ export const FeaturesCardSection = () => {
                                 <h3 className="text-black text-3xl mt-12">{title}</h3>
                                 <p className="text-lg text-white mt-4">{description}</p>
                                 <div className="flex items-center gap-2 justify-between mt-12">
-                                    <Button className="text-sm font-heading uppercase font-extrabold tracking-wider text-white" variant="primaryOutline">
+                                    <Button className="text-sm font-heading uppercase font-extrabold tracking-wider bg-black text-white" variant="primaryOutline">
                                         Afla mai multe
                                     </Button>
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="size-8 text-white group-hover:text-black -translate-x-2 group-hover:translate-x-6">
