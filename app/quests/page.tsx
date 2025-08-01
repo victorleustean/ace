@@ -1,4 +1,4 @@
-import { FeedWrapper } from "@/components/feed-wrapper";
+
 import { StickyWrapper } from "@/components/sticky-wrapper";
 import { UserProgress } from "@/components/user-progress";
 import {  getUserProgress, getUserSubscription } from "@/db/queries";
