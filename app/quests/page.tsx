@@ -4,6 +4,7 @@ import {  getUserProgress, getUserSubscription } from "@/db/queries";
 import { auth } from "@clerk/nextjs/server";
 import Image from "next/image";
 import { redirect } from "next/navigation";
+
 import { Sidebar } from "@/components/sidebar";
 import { MobileHeader } from "@/components/mobile-header";
 import { Progress } from "@/components/ui/progress";

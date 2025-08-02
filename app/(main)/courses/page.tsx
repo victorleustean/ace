@@ -30,6 +30,7 @@ const CoursesPage = async () => {
                     Cursurile FinHub
                 </h1>
                 <List 
+                    
                     courses={courses}
                     activeCourseId={userProgress?.activeCourseId}
                 />

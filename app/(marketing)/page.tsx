@@ -1,19 +1,24 @@
 import { Hero } from "./hero"
-
 import { ProductShowcase } from "./product-showcase"
 import { Pricing } from "./pricing"
 import { CallToAction } from "./call-to-action"
 import { FeaturesCardSection } from "./featurescard";
 import { Testimonials } from "./testimonials"
+import { auth } from "@clerk/nextjs/server";
+import { redirect } from "next/navigation";
 
 export default async function Home() {
+  const { userId } = await auth();
 
+  // If user is signed in, redirect to courses
+  if (userId) {
+    redirect("/courses");
+  }
 
   return (
     <>
       <Hero />
       <FeaturesCardSection />
-      
       <Testimonials />
       <ProductShowcase />
       <Pricing /> 
@@ -21,8 +26,6 @@ export default async function Home() {
     </>
   );
 }
-
-
 
 
 

@@ -1,8 +1,14 @@
 import { Button } from "@/components/ui/button"
 import { Menu } from "lucide-react"
 import Image from 'next/image'
-import { ClerkLoaded, ClerkLoading, SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
+import Link from 'next/link'
+import { ClerkLoaded, ClerkLoading, SignedIn, SignedOut, SignInButton } from "@clerk/nextjs";
 import { Loader } from "lucide-react";
+import {
+  Sheet,
+  SheetContent,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 
 export const Header = () => {
   return (
@@ -45,10 +51,21 @@ export const Header = () => {
               
               <ClerkLoaded>
                 <SignedIn>
-                  <UserButton afterSignOutUrl="/" />
+                  <Link href="/courses">
+                    <Button
+                        variant="default"
+                        className="relative py-2 px-3 lg:py-3 lg:px-4 xl:py-3 xl:px-5 2xl:py-4 2xl:px-6 rounded-lg font-medium text-sm lg:text-base xl:text-lg 2xl:text-xl bg-gradient-to-b from-black to-[#001E80] shadow-[0px_0px_12px_#001E80]">
+                      <div className="absolute inset-0">
+                        <div className="rounded-lg border border-white/20 absolute inset-0 [mask-image:linear-gradient(to_bottom,white,transparent)]"></div>
+                        <div className="rounded-lg border absolute inset-0 border-white/40 [mask-image:linear-gradient(to_top,white,transparent)]"></div>
+                        <div className="absolute inset-0 shadow-[0_0_10px_rgb(0,30,128,.7)_inset] rounded-lg"></div>
+                      </div>
+                      <span>Dashboard</span>
+                    </Button>
+                  </Link>
                 </SignedIn>
                 <SignedOut>
-                  <SignInButton mode="modal" fallbackRedirectUrl="/learn" forceRedirectUrl="/learn">
+                  <SignInButton mode="modal" fallbackRedirectUrl="/courses" forceRedirectUrl="/courses">
                     <Button className="relative py-2 px-3 lg:py-3 lg:px-4 xl:py-3 xl:px-5 2xl:py-4 2xl:px-6 rounded-lg font-medium text-sm lg:text-base xl:text-lg 2xl:text-xl bg-gradient-to-b from-black to-[#001E80] shadow-[0px_0px_12px_#001E80]">
                       <div className="absolute inset-0">
                         <div className="rounded-lg border border-white/20 absolute inset-0 [mask-image:linear-gradient(to_bottom,white,transparent)]"></div>
@@ -61,7 +78,40 @@ export const Header = () => {
                 </SignedOut>
               </ClerkLoaded>
 
-              <Menu className="w-6 h-6 lg:w-7 lg:h-7 xl:w-8 xl:h-8 2xl:w-9 2xl:h-9 cursor-pointer text-black md:hidden" />
+              <Sheet>
+                <SheetTrigger asChild>
+                  <Menu className="w-6 h-6 lg:w-7 lg:h-7 xl:w-8 xl:h-8 2xl:w-9 2xl:h-9 cursor-pointer text-black md:hidden" />
+                </SheetTrigger>
+                <SheetContent side="right" className="p-6">
+                  <nav className="flex flex-col gap-6 mt-8">
+                    <a href="#" className="text-black hover:text-gray-600 transition text-lg">Funcționalități</a>
+                    <a href="#" className="text-black hover:text-gray-600 transition text-lg">Despre noi</a>
+                    <a href="#" className="text-black hover:text-gray-600 transition text-lg">Produse</a>
+                    <a href="#" className="text-black hover:text-gray-600 transition text-lg">Ajutor și asistență</a>
+                    <div className="mt-6">
+                      <ClerkLoaded>
+                        <SignedIn>
+                          <Link href="/courses">
+                            <Button
+                                variant="default"
+                                className="w-full bg-black text-white hover:bg-gray-800"
+                                size="lg">
+                              Dashboard
+                            </Button>
+                          </Link>
+                        </SignedIn>
+                        <SignedOut>
+                          <SignInButton mode="modal" fallbackRedirectUrl="/courses" forceRedirectUrl="/courses">
+                            <Button className="w-full bg-black text-white hover:bg-gray-800" size="lg">
+                              Încearcă gratuit!
+                            </Button>
+                          </SignInButton>
+                        </SignedOut>
+                      </ClerkLoaded>
+                    </div>
+                  </nav>
+                </SheetContent>
+              </Sheet>
             </div>
           </div>
 

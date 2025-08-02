@@ -7,7 +7,7 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { useScroll, useTransform,  } from "framer-motion";
 import { useRef } from "react";
-import { ClerkLoaded, ClerkLoading, SignedIn, SignedOut, SignInButton,  } from "@clerk/nextjs";
+import { ClerkLoaded, ClerkLoading,  SignedOut, SignInButton,  } from "@clerk/nextjs";
 
 export function Hero() {
   const heroRef = useRef(null);
@@ -40,17 +40,8 @@ export function Hero() {
               </ClerkLoading>
               
               <ClerkLoaded>
-                <SignedIn>
-                  <Button
-                      variant="default"
-                      className="w-full sm:w-auto bg-black text-white hover:bg-gray-800"
-                      size="lg"
-                      onClick={() => window.location.href = "./courses"}>
-                    Continuă să înveți
-                  </Button>
-                </SignedIn>
                 <SignedOut>
-                  <SignInButton mode="modal" fallbackRedirectUrl="/learn" forceRedirectUrl="/learn">
+                  <SignInButton mode="modal" fallbackRedirectUrl="/courses" forceRedirectUrl="/courses">
                     <Button
                         variant="default"
                         className="w-full sm:w-auto bg-black text-white hover:bg-gray-800"
@@ -83,45 +74,37 @@ export function Hero() {
                }}
             >
               <Image
-                src="/hero-dollar.webp"
-                alt="Hero Dollar"
-                width={400}
-                height={400}
-                priority
-                className="w-full h-auto"
+                 src="/ChatGPT Image 14 iun. 2025, 15_24_19.png"
+                 alt="Hero Dollar"
+                 width={400}
+                 height={400}
+                 priority={true}
+                 className="w-full h-full object-contain"
               />
             </motion.div>
-            <motion.div
+            <motion.img
+               src="/cylinder-p.webp"
+               width={220}
+               height={220}
+               alt="Cylinder Image"
+               loading="lazy"
                className="hidden md:block -top-8 -left-32 md:absolute xl:-left-24 xl:-top-12 xl:scale-110"
                style={{
                 translateY: translateY,
                }}
-             >
-              <Image
-                src="/cylinder.webp"
-                width={220}
-                height={220}
-                alt="Cylinder Image"
-                loading="lazy"
-                className="w-full h-auto"
-              />
-            </motion.div>
-            <motion.div
+             />
+            <motion.img
+               src="/noodle-p.webp"
+               width={220}
+               height={220}
+               alt="Noodle Image"
+               loading="lazy"
                className="hidden lg:block absolute top-[524px] left-[448px] rotate-[30deg] xl:top-[620px] xl:left-[520px] xl:scale-110"
                style={{
                 rotate: 30,
                 translateY: translateY,
                }}
-             >
-              <Image
-                src="/noodle.webp"
-                width={220}
-                height={220}
-                alt="Noodle Image"
-                loading="lazy"
-                className="w-full h-auto"
-              />
-            </motion.div>
+             />
           </div>
         </div>
       </div>
