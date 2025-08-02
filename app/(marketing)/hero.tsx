@@ -74,7 +74,7 @@ export function Hero() {
                }}
             >
               <Image
-                 src="/ChatGPT Image 14 iun. 2025, 15_24_19.png"
+                 src="/ChatGPT Image 14 iun. 2025, 15_24_19 (1).png"
                  alt="Hero Dollar"
                  width={400}
                  height={400}
