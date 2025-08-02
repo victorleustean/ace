@@ -1,15 +1,14 @@
 "use client"
 
 import React, { useState } from "react";
-import AshwinSantiago from "@/public/ashwin-santiago.jpg";
+
 import AlecWhitten from "@/public/alec-whitten.jpg";
 import ReneWells from "@/public/rene-wells.jpg";
 import MollieHall from "@/public/mollie-hall.jpg";
-import { SectionBorder } from "@/components/section-border";
-import { SectionContent } from "@/components/section-content";
+
 import Image from "next/image"
 import { Quote } from "lucide-react";
-import { motion,  AnimatePresence, LayoutGroup } from "framer-motion"
+import { motion,   LayoutGroup } from "framer-motion"
 import IoanChelaru from "@/public/IoanChelaru1.jpg"
 
 export const testimonials = [
