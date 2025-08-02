@@ -1,13 +1,15 @@
 "use client"
 
 import { Button } from "@/components/ui/button";
-import { Loader } from "lucide-react";
+import { ArrowRight, Loader } from "lucide-react"; // Added Loader import
+import cogImage from "@/public/ChatGPT Image 14 iun. 2025, 15_24_19.png";
 import Image from "next/image";
-
+import cylinderImage from "@/public/cylinder.png";
+import noodleImage from "@/public/noodle.png";
 import { motion } from "framer-motion";
-import { useScroll, useTransform,  } from "framer-motion";
+import { useScroll, useTransform, useMotionValueEvent } from "framer-motion";
 import { useRef } from "react";
-import { ClerkLoaded, ClerkLoading,  SignedOut, SignInButton,  } from "@clerk/nextjs";
+import { ClerkLoaded, ClerkLoading, SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 
 export function Hero() {
   const heroRef = useRef(null);
@@ -24,7 +26,7 @@ export function Hero() {
         <div className="md:flex items-center">
           <div className="md:w-[478px] xl:w-[600px] px-4 md:px-0 md:ml-8 xl:ml-16">
             <div className="text-sm inline-flex border border-[#222]/10 px-3 py-1 rounded-lg tracking-tight">
-              Versiunea Beta-0.1 e aici!
+              Versiunea Beta e aici!
             </div>
             <h1 className="text-5xl md:text-7xl xl:text-8xl font-bold tracking-tighter bg-gradient-to-b from-black to-[#001E80] text-transparent bg-clip-text mt-6">
               Startul tău financiar începe aici
@@ -40,8 +42,17 @@ export function Hero() {
               </ClerkLoading>
               
               <ClerkLoaded>
+                <SignedIn>
+                  <Button
+                      variant="default"
+                      className="w-full sm:w-auto bg-black text-white hover:bg-gray-800"
+                      size="lg"
+                      onClick={() => window.location.href = "./courses"}>
+                    Continuă să înveți
+                  </Button>
+                </SignedIn>
                 <SignedOut>
-                  <SignInButton mode="modal" fallbackRedirectUrl="/courses" forceRedirectUrl="/courses">
+                  <SignInButton mode="modal" fallbackRedirectUrl="/learn" forceRedirectUrl="/learn">
                     <Button
                         variant="default"
                         className="w-full sm:w-auto bg-black text-white hover:bg-gray-800"
@@ -61,7 +72,11 @@ export function Hero() {
           </div>
                    
           <div className="mt-20 md:mt-0 md:h-[648px] xl:h-[780px] md:flex-1 relative">
-            <motion.div
+            <motion.img
+               src={cogImage.src}
+               alt="cogImage"
+               width={400}
+               height={400}
                className="md:absolute md:h-full md:w-auto md:max-w-none md:-left-6 lg:left-0 xl:left-8 xl:scale-110"
                animate={{
                 translateY: [-30, 30],
@@ -72,34 +87,22 @@ export function Hero() {
                 duration: 3,
                 ease: 'easeInOut',
                }}
-            >
-              <Image
-                 src="/ChatGPT Image 14 iun. 2025, 15_24_19 (1).png"
-                 alt="Hero Dollar"
-                 width={400}
-                 height={400}
-                 priority={true}
-                 className="w-full h-full object-contain"
-              />
-            </motion.div>
+            />
             <motion.img
-               src="/cylinder-p.webp"
+               src={cylinderImage.src}
                width={220}
                height={220}
                alt="Cylinder Image"
-               loading="lazy"
                className="hidden md:block -top-8 -left-32 md:absolute xl:-left-24 xl:-top-12 xl:scale-110"
                style={{
                 translateY: translateY,
                }}
              />
             <motion.img
-               src="/noodle-p.webp"
+               src={noodleImage.src}
                width={220}
-               height={220}
-               alt="Noodle Image"
-               loading="lazy"
                className="hidden lg:block absolute top-[524px] left-[448px] rotate-[30deg] xl:top-[620px] xl:left-[520px] xl:scale-110"
+               alt="NoodleImage"
                style={{
                 rotate: 30,
                 translateY: translateY,

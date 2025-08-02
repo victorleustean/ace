@@ -1,6 +1,6 @@
 "use client"
 
-import productImage from "@/public/product-image (2).png"
+import productImage from "@/public/product-image.png"
 import Image from "next/image"
 import pyramidImage from "@/public/pyramid.png"
 import tubeImage from "@/public/tube.png"

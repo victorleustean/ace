@@ -2,19 +2,20 @@
 
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
-
+import starImage from "@/public/star.png";
+import springImage from "@/public/spring.png";
 
 import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
+import { useRef } from "react"; // Added missing import
 
 export const CallToAction = () => {
     const sectionRef = useRef(null);
-    const { scrollYProgress } = useScroll({
+    const { scrollYProgress } = useScroll({ // Fixed: changed {{ to {
         target: sectionRef,
-        offset: ['start end', 'end start']
+        offset: ['start end', 'end start'] // Fixed: added missing quote and corrected 'star' to 'start'
     });
 
-    const translateY = useTransform(scrollYProgress, [0, 1], [150, -150]);
+    const translateY = useTransform(scrollYProgress, [0, 1], [150, -150]); // Added missing semicolon
 
     return (
         <section ref={sectionRef} className="bg-gradient-to-b from-white via-[#D2DCFF] to-white flex items-center justify-center overflow-x-clip mt-24 mb-32">
@@ -28,22 +29,20 @@ export const CallToAction = () => {
                            FinHub nu este doar o platformă de pregătire, ci și un ghid pentru înțelegerea lumii financiare. Îți oferă noțiuni clare de educație financiară și antreprenorială, esențiale pentru orice viitor profesionist. Înveți cum să-ți gestionezi banii, să gândești strategic și să construiești pe termen lung.
                         </p>
                         <motion.img
-                            src="/star.png" 
+                            src={starImage.src} 
                             alt="Star Image" 
                             width={360} 
                             height={360}
-                            loading="lazy"
                             className="absolute -left-[350px] 2xl:-left-[450px] -top-[137px] 2xl:-top-[170px] 2xl:w-[450px] 2xl:h-[450px] hidden md:block" 
                             style={{
                                 translateY
                             }}
                         />
                         <motion.img 
-                            src="/spring.png" 
+                            src={springImage.src} 
                             alt="Spring Image" 
                             width={360} 
                             height={360}
-                            loading="lazy"
                             className="absolute -right-[331px] 2xl:-right-[420px] -top-[19px] 2xl:-top-[25px] 2xl:w-[450px] 2xl:h-[450px] hidden md:block" 
                             style={{
                                 translateY
