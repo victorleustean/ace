@@ -9,7 +9,7 @@ import noodleImage from "@/public/noodle.png";
 import { motion } from "framer-motion";
 import { useScroll, useTransform,  } from "framer-motion";
 import { useRef } from "react";
-import { ClerkLoaded, ClerkLoading, SignedIn, SignedOut, SignInButton, } from "@clerk/nextjs";
+import { ClerkLoaded, ClerkLoading, SignedOut, SignInButton, } from "@clerk/nextjs";
 
 export function Hero() {
   const heroRef = useRef(null);
