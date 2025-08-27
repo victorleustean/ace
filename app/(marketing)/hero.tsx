@@ -101,7 +101,7 @@ export function Hero() {
                />
             </motion.div>
             <motion.div
-               className="hidden lg:block absolute top-[524px] left-[448px] rotate-[30deg] xl:top-[620px] xl:left-[520px] xl:scale-110"
+               className="hidden lg:block absolute top-[524px] left-[448px] xl:top-[620px] xl:left-[520px] xl:scale-110"
                style={{
                 rotate: 30,
                 translateY: translateY,
@@ -112,6 +112,9 @@ export function Hero() {
                  width={220}
                  height={220}
                  alt="NoodleImage"
+                 className="w-[220px] h-[220px] xl:w-[240px] xl:h-[240px]"
+                 loading="lazy"
+                 priority={false}
                />
             </motion.div>
           </div>
