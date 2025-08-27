@@ -100,22 +100,16 @@ export function Hero() {
                  priority={false}
                />
             </motion.div>
-            <motion.div
-               className="hidden lg:block absolute top-[524px] left-[448px] xl:top-[620px] xl:left-[520px] xl:scale-110"
+           <motion.img
+               src={noodleImage.src}
+               width={220}
+               className="hidden lg:block absolute top-[524px] left-[448px] rotate-[30deg] xl:top-[620px] xl:left-[520px] xl:scale-110"
+               alt="NoodleImage"
                style={{
                 rotate: 30,
                 translateY: translateY,
                }}
-            >
-              <Image
-                 src={noodleImage}
-                 width={262}
-                 height={262}
-                 alt="NoodleImage"
-                 loading="lazy"
-                 priority={false}
-               />
-            </motion.div>
+             />
           </div>
         </div>
       </div>
