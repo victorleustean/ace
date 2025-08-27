@@ -109,8 +109,8 @@ export function Hero() {
             >
               <Image
                  src={noodleImage}
-                 width={220}
-                 height={220}
+                 width={262}
+                 height={262}
                  alt="NoodleImage"
                  loading="lazy"
                  priority={false}
