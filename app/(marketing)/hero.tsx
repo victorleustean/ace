@@ -42,15 +42,7 @@ export function Hero() {
               </ClerkLoading>
               
               <ClerkLoaded>
-                <SignedIn>
-                  <Button
-                      variant="default"
-                      className="w-full sm:w-auto bg-black text-white hover:bg-gray-800"
-                      size="lg"
-                      onClick={() => window.location.href = "./courses"}>
-                    Continuă să înveți
-                  </Button>
-                </SignedIn>
+                
                 <SignedOut>
                   <SignInButton mode="modal" fallbackRedirectUrl="/learn" forceRedirectUrl="/learn">
                     <Button

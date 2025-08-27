@@ -12,7 +12,7 @@ export default async function Home() {
 
   // If user is signed in, redirect to courses
   if (userId) {
-    redirect("/courses");
+    redirect("/learn");
   }
 
   return (

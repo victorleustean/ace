@@ -1,9 +1,9 @@
 import logo from "@/public/alpha.png";
 import Image from "next/image";
-import socialX from "@/public/social-x.svg";
-import socialLinkedin from "@/public/social-linkedin.svg";
-import socialInsta from "@/public/social-insta.svg";
-import socialYoutube from "@/public/social-youtube.svg";
+import socialX from "@/public/icons8-x.svg";
+import socialLinkedin from "@/public/icons8-linkedin.svg";
+import socialInsta from "@/public/icons8-instagram.svg";
+import socialYoutube from "@/public/icons8-youtube.svg";
 
 export const Footer = () => {
   return (

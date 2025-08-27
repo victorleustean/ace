@@ -50,20 +50,7 @@ export const Header = () => {
               </ClerkLoading>
               
               <ClerkLoaded>
-                <SignedIn>
-                  <Link href="/courses">
-                    <Button
-                        variant="default"
-                        className="relative py-2 px-3 lg:py-3 lg:px-4 xl:py-3 xl:px-5 2xl:py-4 2xl:px-6 rounded-lg font-medium text-sm lg:text-base xl:text-lg 2xl:text-xl bg-gradient-to-b from-black to-[#001E80] shadow-[0px_0px_12px_#001E80]">
-                      <div className="absolute inset-0">
-                        <div className="rounded-lg border border-white/20 absolute inset-0 [mask-image:linear-gradient(to_bottom,white,transparent)]"></div>
-                        <div className="rounded-lg border absolute inset-0 border-white/40 [mask-image:linear-gradient(to_top,white,transparent)]"></div>
-                        <div className="absolute inset-0 shadow-[0_0_10px_rgb(0,30,128,.7)_inset] rounded-lg"></div>
-                      </div>
-                      <span>Dashboard</span>
-                    </Button>
-                  </Link>
-                </SignedIn>
+                
                 <SignedOut>
                   <SignInButton mode="modal" fallbackRedirectUrl="/courses" forceRedirectUrl="/courses">
                     <Button className="relative py-2 px-3 lg:py-3 lg:px-4 xl:py-3 xl:px-5 2xl:py-4 2xl:px-6 rounded-lg font-medium text-sm lg:text-base xl:text-lg 2xl:text-xl bg-gradient-to-b from-black to-[#001E80] shadow-[0px_0px_12px_#001E80]">
