@@ -112,7 +112,6 @@ export function Hero() {
                  width={220}
                  height={220}
                  alt="NoodleImage"
-                 className="w-[220px] h-[220px] xl:w-[240px] xl:h-[240px]"
                  loading="lazy"
                  priority={false}
                />
