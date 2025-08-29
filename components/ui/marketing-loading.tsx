@@ -2,7 +2,7 @@
 "use client";
 
 import React, { useState } from 'react';
-import BlurText from "./blur-text";
+import BlurText from "@/components/blur-text";
 
 interface MarketingLoadingProps {
   onAnimationComplete?: () => void;
