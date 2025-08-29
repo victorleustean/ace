@@ -1,0 +1,138 @@
+/* Add to your global.css or tailwind.css */
+
+/* Apple-style smooth entrance animation */
+@keyframes appleEntrance {
+  0% {
+    opacity: 0;
+    transform: translateY(40px) scale(0.95);
+    filter: blur(10px);
+  }
+  50% {
+    opacity: 0.7;
+    transform: translateY(20px) scale(0.98);
+    filter: blur(2px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+/* Smooth fade out for loading screen */
+@keyframes loadingFadeOut {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+    backdrop-filter: blur(0px);
+  }
+  50% {
+    opacity: 0.6;
+    transform: scale(1.02);
+    backdrop-filter: blur(5px);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.05);
+    backdrop-filter: blur(20px);
+  }
+}
+
+/* Gentle content reveal */
+@keyframes contentReveal {
+  0% {
+    opacity: 0;
+    transform: translateY(60px) scale(0.9);
+  }
+  40% {
+    opacity: 0.3;
+    transform: translateY(30px) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Classes to use */
+.apple-entrance {
+  animation: appleEntrance 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.loading-fade-out {
+  animation: loadingFadeOut 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.content-reveal {
+  animation: contentReveal 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+/* Smooth transition for layout changes */
+.smooth-layout {
+  transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Enhanced marketing page entrance */
+.marketing-entrance {
+  animation: appleEntrance 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: 0.2s;
+  opacity: 0; /* Start invisible */
+}
+
+/* Staggered animations for child elements */
+.stagger-child {
+  opacity: 0;
+  transform: translateY(30px);
+  animation: contentReveal 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+.stagger-child:nth-child(1) { animation-delay: 0.1s; }
+.stagger-child:nth-child(2) { animation-delay: 0.2s; }
+.stagger-child:nth-child(3) { animation-delay: 0.3s; }
+.stagger-child:nth-child(4) { animation-delay: 0.4s; }
+.stagger-child:nth-child(5) { animation-delay: 0.5s; }
+
+/* If using Tailwind, add these to your tailwind.config.js */
+/*
+module.exports = {
+  theme: {
+    extend: {
+      animation: {
+        'apple-entrance': 'appleEntrance 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+        'loading-fade-out': 'loadingFadeOut 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards',
+        'content-reveal': 'contentReveal 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards',
+        'marketing-entrance': 'appleEntrance 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.2s both',
+      },
+      keyframes: {
+        appleEntrance: {
+          '0%': {
+            opacity: '0',
+            transform: 'translateY(40px) scale(0.95)',
+            filter: 'blur(10px)'
+          },
+          '50%': {
+            opacity: '0.7',
+            transform: 'translateY(20px) scale(0.98)',
+            filter: 'blur(2px)'
+          },
+          '100%': {
+            opacity: '1',
+            transform: 'translateY(0) scale(1)',
+            filter: 'blur(0)'
+          }
+        },
+        loadingFadeOut: {
+          '0%': { opacity: '1', transform: 'scale(1)', 'backdrop-filter': 'blur(0px)' },
+          '50%': { opacity: '0.6', transform: 'scale(1.02)', 'backdrop-filter': 'blur(5px)' },
+          '100%': { opacity: '0', transform: 'scale(1.05)', 'backdrop-filter': 'blur(20px)' }
+        },
+        contentReveal: {
+          '0%': { opacity: '0', transform: 'translateY(60px) scale(0.9)' },
+          '40%': { opacity: '0.3', transform: 'translateY(30px) scale(0.95)' },
+          '100%': { opacity: '1', transform: 'translateY(0) scale(1)' }
+        }
+      }
+    }
+  }
+}
+*/
